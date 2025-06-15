@@ -31,7 +31,6 @@ export default function TopContributors({ contributor }) {
             </div>
           </div>
           <div className='flex items-center gap-1 text-green-600 font-semibold'>
-            <FaRupeeSign size={12} />
             <span>{convertToIndianCurrency(contributor.totalAmount)}</span>
           </div>
         </motion.div>
