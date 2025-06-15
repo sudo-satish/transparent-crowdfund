@@ -8,6 +8,6 @@ export default async function Home() {
   const summary = await Summary.findOne({}).lean();
 
   return (
-    <Transactions transactions={JSON.parse(JSON.stringify(transactions))} summary={JSON.parse(JSON.stringify(summary))} />
+    <Transactions transactions={JSON.parse(JSON.stringify(transactions ?? []))} summary={JSON.parse(JSON.stringify(summary ?? {}))} />
   );
 }

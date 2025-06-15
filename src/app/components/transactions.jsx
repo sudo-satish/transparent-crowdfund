@@ -3,6 +3,9 @@
 import { motion } from 'framer-motion';
 import { convertToIndianCurrency, formatDate } from '@/utils/helper';
 import { useRouter } from 'next/navigation';
+import { FaRupeeSign } from 'react-icons/fa';
+import { BsLightningChargeFill } from 'react-icons/bs';
+import { config } from '@/config';
 
 export default function Transactions({ transactions, summary }) {
   const router = useRouter();
@@ -99,30 +102,44 @@ export default function Transactions({ transactions, summary }) {
           </motion.div>
         </div>
 
+        {/* Action Buttons */}
+        <div className='flex flex-col sm:flex-row gap-3 mb-6'>
+          <motion.button
+            whileHover={{
+              scale: 1.02,
+              boxShadow: '0 0 10px rgba(34, 197, 94, 0.3)',
+            }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => window.open(config.razorpay.link, '_blank')}
+            className='group relative px-3 py-1.5 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg text-sm font-medium hover:from-green-600 hover:to-emerald-700 transition-all duration-300 cursor-pointer flex items-center justify-center gap-1.5 overflow-hidden'
+          >
+            <FaRupeeSign className='text-yellow-300' size={14} />
+            <span>Make Payment</span>
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => router.push('/analytics')}
+            className='px-3 py-1.5 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors'
+          >
+            View Analytics
+          </motion.button>
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={exportToCSV}
+            className='px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors'
+          >
+            Export to CSV
+          </motion.button>
+        </div>
+
         {/* Transactions List */}
         <div className='bg-white rounded-lg shadow-sm p-6'>
           <div className='flex justify-between items-center mb-4'>
             <h2 className='text-xl font-semibold text-gray-800'>
               Recent Transactions
             </h2>
-            <div className='flex gap-3'>
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => router.push('/analytics')}
-                className='px-2 sm:px-4 py-1.5 sm:py-2 bg-purple-600 text-white rounded-lg text-xs sm:text-sm font-medium hover:bg-purple-700 transition-colors'
-              >
-                View Analytics
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={exportToCSV}
-                className='px-2 sm:px-4 py-1.5 sm:py-2 bg-blue-600 text-white rounded-lg text-xs sm:text-sm font-medium hover:bg-blue-700 transition-colors'
-              >
-                Export to CSV
-              </motion.button>
-            </div>
           </div>
           <div className='space-y-4'>
             {transactions.map((transaction, index) => (
@@ -146,16 +163,22 @@ export default function Transactions({ transactions, summary }) {
                       {formatDate(transaction.date)}
                     </p>
                   </div>
-                  <p
-                    className={`font-bold ${
-                      transaction.transaction_type === 'credit'
-                        ? 'text-green-600'
-                        : 'text-red-600'
-                    }`}
-                  >
-                    {transaction.transaction_type === 'credit' ? '+' : '-'}
-                    {convertToIndianCurrency(transaction.amount)}
-                  </p>
+                  <div className='text-right'>
+                    <p
+                      className={`font-bold ${
+                        transaction.transaction_type === 'credit'
+                          ? 'text-green-600'
+                          : 'text-red-600'
+                      }`}
+                    >
+                      {transaction.transaction_type === 'credit' ? '+' : '-'}
+                      {convertToIndianCurrency(transaction.amount)}
+                    </p>
+                    <p className='text-xs text-gray-500'>
+                      Balance:{' '}
+                      {convertToIndianCurrency(transaction.closing_balance)}
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             ))}
