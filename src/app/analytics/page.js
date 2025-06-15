@@ -8,8 +8,8 @@ export default async function AnalyticsPage() {
 
     return (
         <Analytics
-            transactions={JSON.parse(JSON.stringify(transactions))}
-            summary={JSON.parse(JSON.stringify(summary))}
+            transactions={JSON.parse(JSON.stringify(transactions ?? []))}
+            summary={JSON.parse(JSON.stringify(summary ?? {}))}
         />
     );
 } 
