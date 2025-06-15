@@ -2,6 +2,8 @@ import { Transaction } from "@/services/models/transactions";
 import Transactions from "./components/transactions";
 import { Summary } from "@/services/models/summary";
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
 
   const transactions = await Transaction.find({}).sort({ date: -1 }).lean();
