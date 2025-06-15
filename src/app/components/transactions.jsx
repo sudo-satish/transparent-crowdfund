@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import { FaRupeeSign } from 'react-icons/fa';
 import { BsLightningChargeFill } from 'react-icons/bs';
 import { config } from '@/config';
+import { FaHandHoldingHeart, FaUsers } from 'react-icons/fa';
+import { MdLocationOn } from 'react-icons/md';
 
 export default function Transactions({ transactions, summary }) {
   const router = useRouter();
@@ -44,9 +46,49 @@ export default function Transactions({ transactions, summary }) {
   return (
     <div className='min-h-screen bg-gray-50 p-8'>
       <div className='max-w-4xl mx-auto'>
-        <h1 className='text-3xl font-bold text-gray-800 mb-8'>
-          Daily Transaction (Shyam Colony)
-        </h1>
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className='mb-8'
+        >
+          <div className='flex items-center gap-3 mb-2'>
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.2, type: 'spring' }}
+            >
+              <FaHandHoldingHeart className='text-4xl text-green-600' />
+            </motion.div>
+            <h1 className='text-3xl font-bold text-gray-800'>Crowd Funding</h1>
+          </div>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.3 }}
+            className='flex items-center gap-2 ml-12'
+          >
+            <MdLocationOn className='text-xl text-gray-600' />
+            <h2 className='text-xl font-semibold text-gray-700'>
+              Shyam Colony
+            </h2>
+          </motion.div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className='flex flex-col gap-2 mb-8'
+        >
+          <div className='flex items-start gap-3'>
+            <FaUsers className='text-gray-400 mt-1' />
+            <p className='text-sm text-gray-600'>
+              This is a crowd funding platform for the Shyam Colony. We will use
+              this money to fix issues quickly and efficiently.
+            </p>
+          </div>
+        </motion.div>
 
         {/* Summary Cards */}
         <div className='grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8'>
@@ -105,30 +147,79 @@ export default function Transactions({ transactions, summary }) {
         {/* Action Buttons */}
         <div className='flex flex-col sm:flex-row gap-3 mb-6'>
           <motion.button
-            whileHover={{
-              scale: 1.02,
-              boxShadow: '0 0 10px rgba(34, 197, 94, 0.3)',
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              delay: 0.5,
+              duration: 0.3,
             }}
-            whileTap={{ scale: 0.98 }}
+            whileHover={{
+              scale: 1.03,
+              boxShadow: '0 0 20px rgba(34, 197, 94, 0.3)',
+              backgroundColor: 'rgb(22 163 74)',
+            }}
+            whileTap={{
+              scale: 0.97,
+              transition: { duration: 0.1 },
+            }}
             onClick={() => window.open(config.razorpay.link, '_blank')}
-            className='group relative px-3 py-1.5 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg text-sm font-medium hover:from-green-600 hover:to-emerald-700 transition-all duration-300 cursor-pointer flex items-center justify-center gap-1.5 overflow-hidden'
+            className='group relative px-3 py-1.5 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 overflow-hidden'
           >
-            <FaRupeeSign className='text-yellow-300' size={14} />
+            <motion.div
+              initial={{ rotate: -10, opacity: 0 }}
+              animate={{ rotate: 0, opacity: 1 }}
+              transition={{
+                delay: 0.6,
+                type: 'spring',
+                stiffness: 200,
+                damping: 20,
+              }}
+            >
+              <FaRupeeSign className='text-yellow-300' size={14} />
+            </motion.div>
             <span>Make Payment</span>
           </motion.button>
+
           <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              delay: 0.6,
+              duration: 0.3,
+            }}
+            whileHover={{
+              scale: 1.03,
+              boxShadow: '0 0 20px rgba(147, 51, 234, 0.3)',
+              backgroundColor: 'rgb(126 34 206)',
+            }}
+            whileTap={{
+              scale: 0.97,
+              transition: { duration: 0.1 },
+            }}
             onClick={() => router.push('/analytics')}
-            className='px-3 py-1.5 bg-purple-600 text-white rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors'
+            className='px-3 py-1.5 bg-purple-600 text-white rounded-lg text-sm font-medium transition-all duration-200'
           >
             View Analytics
           </motion.button>
+
           <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              delay: 0.7,
+              duration: 0.3,
+            }}
+            whileHover={{
+              scale: 1.03,
+              boxShadow: '0 0 20px rgba(37, 99, 235, 0.3)',
+              backgroundColor: 'rgb(29 78 216)',
+            }}
+            whileTap={{
+              scale: 0.97,
+              transition: { duration: 0.1 },
+            }}
             onClick={exportToCSV}
-            className='px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors'
+            className='px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm font-medium transition-all duration-200'
           >
             Export to CSV
           </motion.button>
