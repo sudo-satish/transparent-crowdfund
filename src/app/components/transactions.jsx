@@ -8,6 +8,7 @@ import { BsLightningChargeFill } from 'react-icons/bs';
 import { config } from '@/config';
 import { FaHandHoldingHeart, FaUsers } from 'react-icons/fa';
 import { MdLocationOn } from 'react-icons/md';
+import TopContributors from './TopContributors';
 
 export default function Transactions({ transactions, summary }) {
   const router = useRouter();
@@ -225,6 +226,9 @@ export default function Transactions({ transactions, summary }) {
           </motion.button>
         </div>
 
+        {/* Top Contributors */}
+        <TopContributors contributor={summary.top_contributor || {}} />
+
         {/* Transactions List */}
         <div className='bg-white rounded-lg shadow-sm p-6'>
           <div className='flex justify-between items-center mb-4'>
@@ -247,10 +251,15 @@ export default function Transactions({ transactions, summary }) {
               >
                 <div className='flex justify-between items-center'>
                   <div>
+                    {transaction.name && (
+                      <p className='text-xs text-gray-500 font-normal mb-0.5'>
+                        {transaction.name}
+                      </p>
+                    )}
                     <p className='font-medium text-gray-800'>
                       {transaction.contact}
                     </p>
-                    <p className='text-sm text-gray-500'>
+                    <p className='text-xs text-gray-400 mt-0.5'>
                       {formatDate(transaction.date)}
                     </p>
                   </div>

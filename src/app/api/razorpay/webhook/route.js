@@ -65,6 +65,7 @@ export async function POST(request) {
         email: body.payload.payment.entity.email,
         contact: body.payload.payment.entity.contact,
         closing_balance: updatedSummary.total_balance,
+        name: body.payload.payment?.entity?.notes?.name || "",
     });
 
     return new Response('Webhook received', { status: 200 });

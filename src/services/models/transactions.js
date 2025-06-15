@@ -10,6 +10,7 @@ const transactionSchema = new mongoose.Schema({
     email: String,
     contact: String,
     closing_balance: Number,
+    name: String,
 });
 
 export const Transaction = mongoose.models.Transaction || mongoose.model('Transaction', transactionSchema);
