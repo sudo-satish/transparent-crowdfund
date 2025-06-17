@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import FeedbackButton from "./components/FeedbackButton";
 import { Toaster } from "react-hot-toast";
+import { db } from "@/services/db";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -11,7 +12,8 @@ export const metadata = {
   description: "A platform for creators to fund their dreams through community support.",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+
   return (
     <ClerkProvider>
       <html lang="en">

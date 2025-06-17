@@ -4,15 +4,52 @@ import { motion } from 'framer-motion';
 import { convertToIndianCurrency, formatDate } from '@/utils/helper';
 import { useRouter } from 'next/navigation';
 import { FaRupeeSign } from 'react-icons/fa';
-import { BsLightningChargeFill } from 'react-icons/bs';
 import { config } from '@/config';
-import { FaHandHoldingHeart, FaUsers } from 'react-icons/fa';
+import { FaHandHoldingHeart, FaUsers, FaShareAlt } from 'react-icons/fa';
 import { MdLocationOn } from 'react-icons/md';
 import TopContributors from './TopContributors';
+import { useEffect, useState } from 'react';
+import ContributorsCount from './ContributorsCount';
 
-export default function Transactions({ transactions, summary }) {
+export default function Transactions({ fundId, summary, fund }) {
+  const [isLoading, setIsLoading] = useState(true);
+  const [transactions, setTransactions] = useState([]);
+  const [shareError, setShareError] = useState('');
+
   const router = useRouter();
-  const currentBalance = summary.total_balance;
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      const transactions = await fetch(`/api/funds/${fundId}/transaction`);
+      const transactionsData = await transactions.json();
+      setTransactions(transactionsData);
+    };
+
+    setIsLoading(true);
+
+    async function fetchData() {
+      await Promise.all([fetchTransactions()]);
+    }
+
+    fetchData().then(() => {
+      setIsLoading(false);
+    });
+  }, [fundId]);
+
+  // if (isLoading) {
+  //   return (
+  //     <div className='min-h-screen bg-gray-50 p-8'>
+  //       <div className='max-w-4xl mx-auto'>
+  //         <div className='flex justify-center items-center h-screen'>
+  //           <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto'></div>
+  //           <p className='mt-4 text-gray-600'>Loading transactions...</p>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
+
+  const currentBalance = summary?.totalBalance || 0;
 
   const exportToCSV = () => {
     // Prepare CSV content
@@ -22,7 +59,7 @@ export default function Transactions({ transactions, summary }) {
       ...transactions.map((t) =>
         [
           formatDate(t.date),
-          t.transaction_type === 'credit' ? 'Received' : 'Spent',
+          t.transactionType === 'credit' ? 'Received' : 'Spent',
           t.contact.replace(/^91/, '+91'),
           convertToIndianCurrency(t.amount).replace(/[₹,]/g, ''), // Remove ₹ and commas for clean number format
         ].join(',')
@@ -44,6 +81,30 @@ export default function Transactions({ transactions, summary }) {
     document.body.removeChild(link);
   };
 
+  const handleShare = async () => {
+    const shareData = {
+      title: `Support ${fund.title}`,
+      text: `Help us reach our goal! Current balance: ${convertToIndianCurrency(currentBalance)}. ${fund.description || 'Join us in making a difference!'}`,
+      url: window.location.href,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        // Fallback for browsers that don't support Web Share API
+        await navigator.clipboard.writeText(window.location.href);
+        alert(
+          'Payment page link copied to clipboard! Share it with others to collect funds.'
+        );
+      }
+    } catch (error) {
+      if (error.name !== 'AbortError') {
+        setShareError('Failed to share. Please try again.');
+      }
+    }
+  };
+
   return (
     <div className='min-h-screen bg-gray-50 p-8'>
       <div className='max-w-4xl mx-auto'>
@@ -61,7 +122,7 @@ export default function Transactions({ transactions, summary }) {
             >
               <FaHandHoldingHeart className='text-4xl text-green-600' />
             </motion.div>
-            <h1 className='text-3xl font-bold text-gray-800'>Crowd Funding</h1>
+            <h1 className='text-3xl font-bold text-gray-800'>Fund Details</h1>
           </div>
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -71,7 +132,7 @@ export default function Transactions({ transactions, summary }) {
           >
             <MdLocationOn className='text-xl text-gray-600' />
             <h2 className='text-xl font-semibold text-gray-700'>
-              Shyam Colony
+              {fund.title}
             </h2>
           </motion.div>
         </motion.div>
@@ -82,13 +143,12 @@ export default function Transactions({ transactions, summary }) {
           transition={{ delay: 0.4 }}
           className='flex flex-col gap-2 mb-8'
         >
-          <div className='flex items-start gap-3'>
-            <FaUsers className='text-gray-400 mt-1' />
-            <p className='text-sm text-gray-600'>
-              This is a crowd funding platform for the Shyam Colony. We will use
-              this money to fix issues quickly and efficiently.
-            </p>
-          </div>
+          {fund.description && (
+            <div className='flex items-start gap-3'>
+              <FaUsers className='text-gray-400 mt-1' />
+              <p className='text-gray-600'>{fund.description}</p>
+            </div>
+          )}
         </motion.div>
 
         {/* Summary Cards */}
@@ -102,7 +162,7 @@ export default function Transactions({ transactions, summary }) {
               Total Received
             </h2>
             <p className='text-lg md:text-2xl font-bold text-green-600'>
-              {convertToIndianCurrency(summary.total_credited)}
+              {convertToIndianCurrency(summary.totalCredited || 0)}
             </p>
           </motion.div>
 
@@ -116,7 +176,7 @@ export default function Transactions({ transactions, summary }) {
               Total Spent
             </h2>
             <p className='text-lg md:text-2xl font-bold text-red-600'>
-              {convertToIndianCurrency(summary.total_debited || 0)}
+              {convertToIndianCurrency(summary.totalDebited || 0)}
             </p>
           </motion.div>
 
@@ -147,7 +207,7 @@ export default function Transactions({ transactions, summary }) {
 
         {/* Action Buttons */}
         <div className='flex flex-col sm:flex-row gap-3 mb-6'>
-          <motion.button
+          <motion.a
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{
@@ -163,7 +223,8 @@ export default function Transactions({ transactions, summary }) {
               scale: 0.97,
               transition: { duration: 0.1 },
             }}
-            onClick={() => window.open(config.razorpay.link, '_blank')}
+            href={config.razorpay.link}
+            target='_blank'
             className='group relative px-3 py-1.5 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 overflow-hidden'
           >
             <motion.div
@@ -179,55 +240,136 @@ export default function Transactions({ transactions, summary }) {
               <FaRupeeSign className='text-yellow-300' size={14} />
             </motion.div>
             <span>Make Payment</span>
-          </motion.button>
+          </motion.a>
 
-          <motion.button
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              delay: 0.6,
-              duration: 0.3,
-            }}
-            whileHover={{
-              scale: 1.03,
-              boxShadow: '0 0 20px rgba(147, 51, 234, 0.3)',
-              backgroundColor: 'rgb(126 34 206)',
-            }}
-            whileTap={{
-              scale: 0.97,
-              transition: { duration: 0.1 },
-            }}
-            onClick={() => router.push('/analytics')}
-            className='px-3 py-1.5 bg-purple-600 text-white rounded-lg text-sm font-medium transition-all duration-200'
-          >
-            View Analytics
-          </motion.button>
+          {transactions?.length > 0 && (
+            <>
+              <motion.button
+                disabled={true}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  delay: 0.6,
+                  duration: 0.3,
+                }}
+                whileHover={{
+                  scale: 1.03,
+                  boxShadow: '0 0 20px rgba(147, 51, 234, 0.3)',
+                  backgroundColor: 'rgb(126 34 206)',
+                }}
+                whileTap={{
+                  scale: 0.97,
+                  transition: { duration: 0.1 },
+                }}
+                onClick={() => router.push('/analytics')}
+                className='px-3 py-1.5 bg-purple-600 text-white rounded-lg text-sm font-medium transition-all duration-200'
+              >
+                View Analytics
+              </motion.button>
 
-          <motion.button
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              delay: 0.7,
-              duration: 0.3,
-            }}
-            whileHover={{
-              scale: 1.03,
-              boxShadow: '0 0 20px rgba(37, 99, 235, 0.3)',
-              backgroundColor: 'rgb(29 78 216)',
-            }}
-            whileTap={{
-              scale: 0.97,
-              transition: { duration: 0.1 },
-            }}
-            onClick={exportToCSV}
-            className='px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm font-medium transition-all duration-200'
-          >
-            Export to CSV
-          </motion.button>
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  delay: 0.7,
+                  duration: 0.3,
+                }}
+                whileHover={{
+                  scale: 1.03,
+                  boxShadow: '0 0 20px rgba(37, 99, 235, 0.3)',
+                  backgroundColor: 'rgb(29 78 216)',
+                }}
+                whileTap={{
+                  scale: 0.97,
+                  transition: { duration: 0.1 },
+                }}
+                onClick={exportToCSV}
+                className='px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm font-medium transition-all duration-200'
+              >
+                Export to CSV
+              </motion.button>
+
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  delay: 0.8,
+                  duration: 0.3,
+                }}
+                whileHover={{
+                  scale: 1.03,
+                  boxShadow: '0 0 20px rgba(59, 130, 246, 0.3)',
+                  backgroundColor: 'rgb(37 99 235)',
+                }}
+                whileTap={{
+                  scale: 0.97,
+                  transition: { duration: 0.1 },
+                }}
+                onClick={() => {
+                  const shareData = {
+                    title: `Support ${fund.title}`,
+                    text: `Help us reach our goal! Current balance: ${convertToIndianCurrency(currentBalance)}. Click the link to make a payment.`,
+                    url: config.razorpay.link,
+                  };
+
+                  if (navigator.share) {
+                    navigator.share(shareData).catch((error) => {
+                      if (error.name !== 'AbortError') {
+                        setShareError(
+                          'Failed to share payment link. Please try again.'
+                        );
+                      }
+                    });
+                  } else {
+                    navigator.clipboard.writeText(config.razorpay.link);
+                    alert('Payment link copied to clipboard!');
+                  }
+                }}
+                className='px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1.5'
+              >
+                <FaRupeeSign size={14} />
+                Share Payment Link
+              </motion.button>
+
+              <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  delay: 0.9,
+                  duration: 0.3,
+                }}
+                whileHover={{
+                  scale: 1.03,
+                  boxShadow: '0 0 20px rgba(59, 130, 246, 0.3)',
+                  backgroundColor: 'rgb(37 99 235)',
+                }}
+                whileTap={{
+                  scale: 0.97,
+                  transition: { duration: 0.1 },
+                }}
+                onClick={handleShare}
+                className='px-3 py-1.5 bg-blue-500 text-white rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1.5'
+              >
+                <FaShareAlt size={14} />
+                Share Page and start collecting funds
+              </motion.button>
+            </>
+          )}
         </div>
 
+        {shareError && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className='text-red-500 text-sm mb-4'
+          >
+            {shareError}
+          </motion.div>
+        )}
+
         {/* Top Contributors */}
-        <TopContributors contributor={summary.top_contributor || {}} />
+        <TopContributors contributor={summary.topContributor || {}} />
+        <ContributorsCount contributors={summary.contributorCount || 0} />
 
         {/* Transactions List */}
         <div className='bg-white rounded-lg shadow-sm p-6'>
@@ -236,53 +378,61 @@ export default function Transactions({ transactions, summary }) {
               Recent Transactions
             </h2>
           </div>
-          <div className='space-y-4'>
-            {transactions.map((transaction, index) => (
-              <motion.div
-                key={transaction._id}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className={`p-4 rounded-lg ${
-                  transaction.transaction_type === 'credit'
-                    ? 'bg-green-50'
-                    : 'bg-red-50'
-                }`}
-              >
-                <div className='flex justify-between items-center'>
-                  <div>
-                    {transaction.name && (
-                      <p className='text-xs text-gray-500 font-normal mb-0.5'>
-                        {transaction.name}
+          {transactions?.length > 0 ? (
+            <div className='space-y-4'>
+              {transactions.map((transaction, index) => (
+                <motion.div
+                  key={transaction._id}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className={`p-4 rounded-lg ${
+                    transaction.transactionType === 'credit'
+                      ? 'bg-green-50'
+                      : 'bg-red-50'
+                  }`}
+                >
+                  <div className='flex justify-between items-center'>
+                    <div>
+                      {transaction.name && (
+                        <p className='text-xs text-gray-500 font-normal mb-0.5'>
+                          {transaction.name}
+                        </p>
+                      )}
+                      <p className='font-medium text-gray-800'>
+                        {transaction.contact}
                       </p>
-                    )}
-                    <p className='font-medium text-gray-800'>
-                      {transaction.contact}
-                    </p>
-                    <p className='text-xs text-gray-400 mt-0.5'>
-                      {formatDate(transaction.date)}
-                    </p>
+                      <p className='text-xs text-gray-400 mt-0.5'>
+                        {formatDate(transaction.date)}
+                      </p>
+                    </div>
+                    <div className='text-right'>
+                      <p
+                        className={`font-bold ${
+                          transaction.transactionType === 'credit'
+                            ? 'text-green-600'
+                            : 'text-red-600'
+                        }`}
+                      >
+                        {transaction.transactionType === 'credit' ? '+' : '-'}
+                        {convertToIndianCurrency(transaction.amount)}
+                      </p>
+                      <p className='text-xs text-gray-500'>
+                        Balance:{' '}
+                        {convertToIndianCurrency(
+                          transaction.closingBalance || 0
+                        )}
+                      </p>
+                    </div>
                   </div>
-                  <div className='text-right'>
-                    <p
-                      className={`font-bold ${
-                        transaction.transaction_type === 'credit'
-                          ? 'text-green-600'
-                          : 'text-red-600'
-                      }`}
-                    >
-                      {transaction.transaction_type === 'credit' ? '+' : '-'}
-                      {convertToIndianCurrency(transaction.amount)}
-                    </p>
-                    <p className='text-xs text-gray-500'>
-                      Balance:{' '}
-                      {convertToIndianCurrency(transaction.closing_balance)}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <div className='text-center text-gray-500'>
+              No transactions found
+            </div>
+          )}
         </div>
       </div>
     </div>

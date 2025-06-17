@@ -5,6 +5,7 @@ import { FaCrown } from 'react-icons/fa';
 import { convertToIndianCurrency } from '@/utils/helper';
 
 export default function TopContributors({ contributor }) {
+  if (!contributor._id) return null;
   return (
     <motion.div
       initial={{ opacity: 0 }}
