@@ -25,3 +25,8 @@ git commit -m "What do your code impact?"
 ```sh
 git push origin feature/feature-name
 ```
+
+5. Pull the changes
+```sh
+git pull origin feature/feature-name
+```
