@@ -76,7 +76,7 @@ export async function POST(request) {
         email: body.payload.payment.entity.email,
         contact: body.payload.payment.entity.contact,
         closingBalance: updatedSummary.totalBalance,
-        name: body.payload.payment?.entity?.notes?.name || "",
+        name: body.payload.payment?.entity?.notes?.name || body.payload.payment?.entity?.customer?.name || "Anonymous",
         fund: fundId,
     });
 

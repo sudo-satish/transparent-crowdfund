@@ -11,12 +11,14 @@ import TopContributors from './TopContributors';
 import { useEffect, useState } from 'react';
 import ContributorsCount from './ContributorsCount';
 import AmountModal from './AmountModal';
+import NameModal from './NameModal';
 
 export default function Transactions({ fundId, summary, fund }) {
   const [isLoading, setIsLoading] = useState(true);
   const [transactions, setTransactions] = useState([]);
   const [shareError, setShareError] = useState('');
   const [isAmountModalOpen, setIsAmountModalOpen] = useState(false);
+  const [isNameModalOpen, setIsNameModalOpen] = useState(false);
   const [isCreatingPaymentLink, setIsCreatingPaymentLink] = useState(false);
 
   const router = useRouter();
@@ -113,12 +115,12 @@ export default function Transactions({ fundId, summary, fund }) {
       // Show amount modal for customer-decided amount
       setIsAmountModalOpen(true);
     } else {
-      // Create fixed amount payment link
-      createFixedAmountPaymentLink();
+      // Show name modal for fixed amount
+      setIsNameModalOpen(true);
     }
   };
 
-  const createFixedAmountPaymentLink = async () => {
+  const createFixedAmountPaymentLink = async (name) => {
     setIsCreatingPaymentLink(true);
     try {
       const response = await fetch('/api/razorpay/fixed-payment-link', {
@@ -126,13 +128,14 @@ export default function Transactions({ fundId, summary, fund }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ fundId }),
+        body: JSON.stringify({ fundId, name }),
       });
 
       const data = await response.json();
 
       if (data.success && data.paymentLink) {
         window.open(data.paymentLink, '_blank');
+        setIsNameModalOpen(false);
       } else {
         alert('Failed to create payment link. Please try again.');
       }
@@ -144,7 +147,7 @@ export default function Transactions({ fundId, summary, fund }) {
     }
   };
 
-  const handleAmountSubmit = async (amount) => {
+  const handleAmountSubmit = async (amount, name) => {
     setIsCreatingPaymentLink(true);
     try {
       const response = await fetch('/api/razorpay/payment-link', {
@@ -152,7 +155,7 @@ export default function Transactions({ fundId, summary, fund }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ amount, fundId }),
+        body: JSON.stringify({ amount, fundId, name }),
       });
 
       const data = await response.json();
@@ -467,6 +470,15 @@ export default function Transactions({ fundId, summary, fund }) {
           onClose={() => setIsAmountModalOpen(false)}
           onSubmit={handleAmountSubmit}
           isLoading={isCreatingPaymentLink}
+        />
+
+        {/* Name Modal for Fixed Amount */}
+        <NameModal
+          isOpen={isNameModalOpen}
+          onClose={() => setIsNameModalOpen(false)}
+          onSubmit={createFixedAmountPaymentLink}
+          isLoading={isCreatingPaymentLink}
+          amount={fund.contributionAmount}
         />
       </div>
     </div>

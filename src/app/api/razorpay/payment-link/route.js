@@ -15,7 +15,7 @@ const CALLBACK_URL = `${SERVER_URL}/api/razorpay/webhook`;
 export async function POST(request) {
     try {
         const body = await request.json();
-        const { amount, fundId } = body;
+        const { amount, fundId, name } = body;
 
         if (!amount || !fundId) {
             return new NextResponse("Missing required fields", { status: 400 });
@@ -41,7 +41,7 @@ export async function POST(request) {
             accept_partial: false,
             description: `Contribution for ${fund.title}`,
             customer: {
-                name: "Anonymous Contributor",
+                name: name || "Anonymous Contributor",
                 email: "contributor@example.com",
                 contact: "+919000090000"
             },
@@ -52,7 +52,8 @@ export async function POST(request) {
             reminder_enable: true,
             notes: {
                 fund_id: fundId,
-                fund_title: fund.title
+                fund_title: fund.title,
+                name: name || "Anonymous"
             },
             callback_url: `${config.razorpay.callback_url}?fund_slug=${fund.slug}&fundId=${fundId}`,
             callback_method: "get",

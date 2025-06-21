@@ -2,23 +2,26 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
-import { FaRupeeSign, FaTimes, FaUser } from 'react-icons/fa';
+import { FaUser, FaTimes, FaRupeeSign } from 'react-icons/fa';
 
-export default function AmountModal({ isOpen, onClose, onSubmit, isLoading }) {
-  const [amount, setAmount] = useState('');
+export default function NameModal({
+  isOpen,
+  onClose,
+  onSubmit,
+  isLoading,
+  amount,
+}) {
   const [name, setName] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (amount && parseFloat(amount) > 0) {
-      onSubmit(parseFloat(amount), name.trim() || 'Anonymous');
-      setAmount('');
+    if (name.trim()) {
+      onSubmit(name.trim());
       setName('');
     }
   };
 
   const handleClose = () => {
-    setAmount('');
     setName('');
     onClose();
   };
@@ -42,7 +45,7 @@ export default function AmountModal({ isOpen, onClose, onSubmit, isLoading }) {
           >
             <div className='flex justify-between items-center mb-4'>
               <h2 className='text-xl font-semibold text-gray-800'>
-                Enter Contribution Details
+                Enter Your Details
               </h2>
               <button
                 onClick={handleClose}
@@ -50,6 +53,13 @@ export default function AmountModal({ isOpen, onClose, onSubmit, isLoading }) {
               >
                 <FaTimes size={20} />
               </button>
+            </div>
+
+            <div className='mb-4 p-3 bg-green-50 rounded-lg'>
+              <div className='flex items-center gap-2 text-green-700'>
+                <FaRupeeSign className='text-sm' />
+                <span className='font-medium'>Fixed Amount: ₹{amount}</span>
+              </div>
             </div>
 
             <form onSubmit={handleSubmit} className='space-y-4'>
@@ -77,32 +87,6 @@ export default function AmountModal({ isOpen, onClose, onSubmit, isLoading }) {
                 </div>
               </div>
 
-              <div>
-                <label
-                  htmlFor='amount'
-                  className='block text-sm font-medium text-gray-700 mb-2'
-                >
-                  Amount (₹)
-                </label>
-                <div className='relative'>
-                  <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-                    <FaRupeeSign className='text-gray-400' />
-                  </div>
-                  <input
-                    type='number'
-                    id='amount'
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    min='1'
-                    step='0.01'
-                    required
-                    className='w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 placeholder:text-gray-400 text-gray-900'
-                    placeholder='Enter amount'
-                    disabled={isLoading}
-                  />
-                </div>
-              </div>
-
               <div className='flex gap-3 pt-2'>
                 <button
                   type='button'
@@ -114,12 +98,7 @@ export default function AmountModal({ isOpen, onClose, onSubmit, isLoading }) {
                 </button>
                 <button
                   type='submit'
-                  disabled={
-                    isLoading ||
-                    !amount ||
-                    parseFloat(amount) <= 0 ||
-                    !name.trim()
-                  }
+                  disabled={isLoading || !name.trim()}
                   className='flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2'
                 >
                   {isLoading ? (
