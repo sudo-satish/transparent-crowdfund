@@ -2,14 +2,17 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { FaPlus, FaRupeeSign } from "react-icons/fa";
+import { FaPlus, FaRupeeSign, FaTrash } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+
+const canDeleteFund = process.env.NODE_ENV === 'development';
 
 export default function DashboardUI() {
 
     const [funds, setFunds] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [deletingFundId, setDeletingFundId] = useState(null);
 
     useEffect(() => {
         const fetchFunds = async () => {
@@ -26,6 +29,32 @@ export default function DashboardUI() {
         };
         fetchFunds();
     }, []);
+
+    const handleDeleteFund = async (fundId, fundTitle) => {
+        if (!confirm(`Are you sure you want to delete "${fundTitle}"? This action cannot be undone.`)) {
+            return;
+        }
+
+        setDeletingFundId(fundId);
+
+        try {
+            const response = await fetch(`/api/funds/${fundId}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete fund');
+            }
+
+            // Remove the fund from the local state
+            setFunds(funds.filter(fund => fund._id !== fundId));
+        } catch (error) {
+            console.error("Error deleting fund:", error);
+            alert('Failed to delete fund. Please try again.');
+        } finally {
+            setDeletingFundId(null);
+        }
+    };
 
     const container = {
         hidden: { opacity: 0 },
@@ -94,32 +123,56 @@ export default function DashboardUI() {
                                 whileHover={{ scale: 1.02 }}
                                 className="group"
                             >
-                                <Link
-                                    href={`/fund/${fund._id}`}
-                                    className="block bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 overflow-hidden"
-                                >
+                                <div className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 overflow-hidden">
                                     <div className="p-6">
                                         <div className="flex items-start justify-between mb-4">
-                                            <h3 className="text-xl font-semibold text-gray-800 group-hover:text-indigo-600 transition-colors duration-200">
-                                                {fund.title}
-                                            </h3>
-                                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${fund.status === 'active' ? 'bg-green-100 text-green-700' :
-                                                fund.status === 'completed' ? 'bg-blue-100 text-blue-700' :
-                                                    'bg-red-100 text-red-700'
-                                                }`}>
-                                                {fund.status.charAt(0).toUpperCase() + fund.status.slice(1)}
-                                            </span>
+                                            <Link
+                                                href={`/fund/${fund.slug}`}
+                                                className="flex-1"
+                                            >
+                                                <h3 className="text-xl font-semibold text-gray-800 group-hover:text-indigo-600 transition-colors duration-200">
+                                                    {fund.title}
+                                                </h3>
+                                            </Link>
+                                            <div className="flex items-center gap-2">
+                                                <span className={`px-3 py-1 rounded-full text-xs font-medium ${fund.status === 'active' ? 'bg-green-100 text-green-700' :
+                                                    fund.status === 'completed' ? 'bg-blue-100 text-blue-700' :
+                                                        'bg-red-100 text-red-700'
+                                                    }`}>
+                                                    {fund.status.charAt(0).toUpperCase() + fund.status.slice(1)}
+                                                </span>
+                                                {
+                                                    canDeleteFund && (
+                                                        <Button
+                                                            variant="ghost"
+                                                            size="sm"
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                e.stopPropagation();
+                                                                handleDeleteFund(fund._id, fund.title);
+                                                            }}
+                                                            disabled={deletingFundId === fund._id}
+                                                            className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2"
+                                                        >
+                                                            {deletingFundId === fund._id ? (
+                                                                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-red-500"></div>
+                                                            ) : (
+                                                                <FaTrash className="h-4 w-4" />
+                                                            )}
+                                                        </Button>
+                                                    )
+                                                }
+
+                                            </div>
                                         </div>
 
                                         {fund.description && (
                                             <p className="text-gray-600 mb-6 line-clamp-2 min-h-[3rem]">
                                                 {fund.description}
                                             </p>
-
                                         )}
 
                                         <div className="space-y-4">
-
                                             {
                                                 fund.goal && (
                                                     <>
@@ -156,7 +209,6 @@ export default function DashboardUI() {
                                                                 />
                                                             </div>
                                                         </div>
-
                                                     </>)
                                             }
 
@@ -165,7 +217,7 @@ export default function DashboardUI() {
                                             </div>
                                         </div>
                                     </div>
-                                </Link>
+                                </div>
                             </motion.div>
                         ))}
                     </motion.div>

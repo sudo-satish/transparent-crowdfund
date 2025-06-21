@@ -6,12 +6,13 @@ export const dynamic = 'force-dynamic';
 
 export default async function Home({ params }) {
 
-    const { id } = await params;
+    const { slug } = await params;
 
-    const summary = await getSummaryByFundId(id);
-    const fund = await Fund.findOne({ _id: id });
+    const fund = await Fund.findOne({ slug });
+
+    const summary = await getSummaryByFundId(fund._id);
 
     return (
-        <Transactions fundId={id} summary={JSON.parse(JSON.stringify(summary))} fund={JSON.parse(JSON.stringify(fund))} />
+        <Transactions fundId={fund._id.toString()} summary={JSON.parse(JSON.stringify(summary))} fund={JSON.parse(JSON.stringify(fund))} />
     );
 }

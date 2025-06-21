@@ -24,6 +24,11 @@ const fundSchema = new mongoose.Schema({
         enum: ['active', 'completed', 'cancelled'],
         default: 'active',
     },
+    slug: {
+        type: String,
+        required: true,
+        unique: true,
+    },
     createdAt: {
         type: Date,
         default: Date.now,
@@ -31,6 +36,13 @@ const fundSchema = new mongoose.Schema({
     updatedAt: {
         type: Date,
         default: Date.now,
+    },
+    contributionAmount: {
+        type: Number,
+    },
+    customerDecidesAmount: {
+        type: Boolean,
+        default: false,
     },
 });
 

@@ -15,6 +15,7 @@ import { validateWebhookSignature } from 'razorpay/dist/utils/razorpay-utils';
 import { config } from '@/config';
 
 export async function POST(request) {
+    console.log('Webhook received');
     const body = await request.json();
     const headersList = await headers();
     const signature = headersList.get('x-razorpay-signature');
@@ -36,37 +37,52 @@ export async function POST(request) {
         return new Response('Webhook received', { status: 200 });
     }
 
-    const summary = await Summary.findOne({});
+    // Extract fund_id from payment notes
+    const fundId = body.payload.payment.entity.notes?.fund_id;
+
+    if (!fundId) {
+        console.error('No fund_id found in payment notes');
+        return new Response('No fund_id found', { status: 400 });
+    }
+
+    // Find or create summary for the specific fund
+    let summary = await Summary.findOne({ fund: fundId });
     if (!summary) {
-        await Summary.create({
-            total_credited: body.event === 'payment.captured' ? body.payload.payment.entity.amount : 0,
-            total_balance: body.event === 'payment.captured' ? body.payload.payment.entity.amount : -body.payload.payment.entity.amount,
-            total_debited: body.event === 'payment.captured' ? 0 : body.payload.payment.entity.amount,
+        summary = await Summary.create({
+            fund: fundId,
+            totalCredited: body.event === 'payment.captured' ? body.payload.payment.entity.amount : 0,
+            totalBalance: body.event === 'payment.captured' ? body.payload.payment.entity.amount : -body.payload.payment.entity.amount,
+            totalDebited: body.event === 'payment.captured' ? 0 : body.payload.payment.entity.amount,
         });
     } else {
         await Summary.findByIdAndUpdate(summary._id, {
             $inc: {
-                total_credited: body.event === 'payment.captured' ? body.payload.payment.entity.amount : 0,
-                total_balance: body.event === 'payment.captured' ? body.payload.payment.entity.amount : -body.payload.payment.entity.amount,
-                total_debited: body.event === 'payment.captured' ? 0 : body.payload.payment.entity.amount,
+                totalCredited: body.event === 'payment.captured' ? body.payload.payment.entity.amount : 0,
+                totalBalance: body.event === 'payment.captured' ? body.payload.payment.entity.amount : -body.payload.payment.entity.amount,
+                totalDebited: body.event === 'payment.captured' ? 0 : body.payload.payment.entity.amount,
             }
         });
     }
 
-    const updatedSummary = await Summary.findOne();
+    const updatedSummary = await Summary.findOne({ fund: fundId });
 
     await Transaction.create({
-        amount: body.payload.payment.entity.amount,
-        date: body.payload.payment.entity.created_at * 1000,
+        amount: body.payload.payment.entity.amount, // Convert from paise to rupees
+        date: new Date(body.payload.payment.entity.created_at * 1000),
         type: body.payload.payment.entity.event,
-        transaction_type: body.event === 'payment.captured' ? 'credit' : 'debit',
-        transaction_id: body.payload.payment.entity.id,
+        transactionType: body.event === 'payment.captured' ? 'credit' : 'debit',
+        transactionId: body.payload.payment.entity.id,
         description: body.payload.payment.entity.description,
         email: body.payload.payment.entity.email,
         contact: body.payload.payment.entity.contact,
-        closing_balance: updatedSummary.total_balance,
+        closingBalance: updatedSummary.totalBalance,
         name: body.payload.payment?.entity?.notes?.name || "",
+        fund: fundId,
     });
 
+    return new Response('Webhook received', { status: 200 });
+}
+
+export async function GET(request) {
     return new Response('Webhook received', { status: 200 });
 }

@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/services/db";
 import { Summary } from "@/services/models/summary";
 import Razorpay from "razorpay";
+import slugify from 'slugify';
 
 const razorpayInstance = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
@@ -44,6 +45,23 @@ export const createPaymentLink = async (fundId) => {
     }
 }
 
+const createSlug = async (title) => {
+    const slug = slugify(title, {
+        lower: true,
+        strict: true,
+        locale: 'en',
+        trim: true
+    });
+
+    const fund = await Fund.findOne({ slug });
+    if (fund) {
+        const randomString = Math.random().toString(36).substring(2, 15);
+        return createSlug(title + " " + randomString);
+    }
+
+    return slug;
+}
+
 export async function POST(request) {
     try {
         const { userId } = auth();
@@ -53,7 +71,7 @@ export async function POST(request) {
         }
 
         const body = await request.json();
-        const { title, description, goal, createdBy } = body;
+        const { title, description, goal, createdBy, contributionAmount, customerDecidesAmount } = body;
 
         // Validate required fields
         if (!title || !createdBy) {
@@ -65,11 +83,17 @@ export async function POST(request) {
             return new NextResponse("Unauthorized", { status: 401 });
         }
 
+
+        const slug = await createSlug(title);
+
         const fund = await Fund.create({
             title,
             description,
             goal,
+            slug,
             createdBy,
+            contributionAmount,
+            customerDecidesAmount,
         });
 
         const summary = await Summary.create({

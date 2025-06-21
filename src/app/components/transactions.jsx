@@ -10,11 +10,14 @@ import { MdLocationOn } from 'react-icons/md';
 import TopContributors from './TopContributors';
 import { useEffect, useState } from 'react';
 import ContributorsCount from './ContributorsCount';
+import AmountModal from './AmountModal';
 
 export default function Transactions({ fundId, summary, fund }) {
   const [isLoading, setIsLoading] = useState(true);
   const [transactions, setTransactions] = useState([]);
   const [shareError, setShareError] = useState('');
+  const [isAmountModalOpen, setIsAmountModalOpen] = useState(false);
+  const [isCreatingPaymentLink, setIsCreatingPaymentLink] = useState(false);
 
   const router = useRouter();
 
@@ -102,6 +105,69 @@ export default function Transactions({ fundId, summary, fund }) {
       if (error.name !== 'AbortError') {
         setShareError('Failed to share. Please try again.');
       }
+    }
+  };
+
+  const handlePaymentClick = () => {
+    if (fund.customerDecidesAmount) {
+      // Show amount modal for customer-decided amount
+      setIsAmountModalOpen(true);
+    } else {
+      // Create fixed amount payment link
+      createFixedAmountPaymentLink();
+    }
+  };
+
+  const createFixedAmountPaymentLink = async () => {
+    setIsCreatingPaymentLink(true);
+    try {
+      const response = await fetch('/api/razorpay/fixed-payment-link', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ fundId }),
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.paymentLink) {
+        window.open(data.paymentLink, '_blank');
+      } else {
+        alert('Failed to create payment link. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error creating payment link:', error);
+      alert('Failed to create payment link. Please try again.');
+    } finally {
+      setIsCreatingPaymentLink(false);
+    }
+  };
+
+  const handleAmountSubmit = async (amount) => {
+    setIsCreatingPaymentLink(true);
+    try {
+      const response = await fetch('/api/razorpay/payment-link', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ amount, fundId }),
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.paymentLink) {
+        window.open(data.paymentLink, '_blank');
+        setIsAmountModalOpen(false);
+      } else {
+        alert('Failed to create payment link. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error creating payment link:', error);
+      alert('Failed to create payment link. Please try again.');
+    } finally {
+      setIsCreatingPaymentLink(false);
     }
   };
 
@@ -207,7 +273,7 @@ export default function Transactions({ fundId, summary, fund }) {
 
         {/* Action Buttons */}
         <div className='flex flex-col sm:flex-row gap-3 mb-6'>
-          <motion.a
+          <motion.button
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{
@@ -223,9 +289,9 @@ export default function Transactions({ fundId, summary, fund }) {
               scale: 0.97,
               transition: { duration: 0.1 },
             }}
-            href={config.razorpay.link}
-            target='_blank'
-            className='group relative px-3 py-1.5 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 overflow-hidden'
+            onClick={handlePaymentClick}
+            disabled={isCreatingPaymentLink}
+            className='group relative px-3 py-1.5 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed'
           >
             <motion.div
               initial={{ rotate: -10, opacity: 0 }}
@@ -239,8 +305,10 @@ export default function Transactions({ fundId, summary, fund }) {
             >
               <FaRupeeSign className='text-yellow-300' size={14} />
             </motion.div>
-            <span>Make Payment</span>
-          </motion.a>
+            <span>
+              {isCreatingPaymentLink ? 'Creating...' : 'Make Payment'}
+            </span>
+          </motion.button>
 
           {transactions?.length > 0 && (
             <>
@@ -287,48 +355,6 @@ export default function Transactions({ fundId, summary, fund }) {
                 className='px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm font-medium transition-all duration-200'
               >
                 Export to CSV
-              </motion.button>
-
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{
-                  delay: 0.8,
-                  duration: 0.3,
-                }}
-                whileHover={{
-                  scale: 1.03,
-                  boxShadow: '0 0 20px rgba(59, 130, 246, 0.3)',
-                  backgroundColor: 'rgb(37 99 235)',
-                }}
-                whileTap={{
-                  scale: 0.97,
-                  transition: { duration: 0.1 },
-                }}
-                onClick={() => {
-                  const shareData = {
-                    title: `Support ${fund.title}`,
-                    text: `Help us reach our goal! Current balance: ${convertToIndianCurrency(currentBalance)}. Click the link to make a payment.`,
-                    url: config.razorpay.link,
-                  };
-
-                  if (navigator.share) {
-                    navigator.share(shareData).catch((error) => {
-                      if (error.name !== 'AbortError') {
-                        setShareError(
-                          'Failed to share payment link. Please try again.'
-                        );
-                      }
-                    });
-                  } else {
-                    navigator.clipboard.writeText(config.razorpay.link);
-                    alert('Payment link copied to clipboard!');
-                  }
-                }}
-                className='px-3 py-1.5 bg-indigo-600 text-white rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1.5'
-              >
-                <FaRupeeSign size={14} />
-                Share Payment Link
               </motion.button>
 
               <motion.button
@@ -434,6 +460,14 @@ export default function Transactions({ fundId, summary, fund }) {
             </div>
           )}
         </div>
+
+        {/* Amount Modal */}
+        <AmountModal
+          isOpen={isAmountModalOpen}
+          onClose={() => setIsAmountModalOpen(false)}
+          onSubmit={handleAmountSubmit}
+          isLoading={isCreatingPaymentLink}
+        />
       </div>
     </div>
   );
