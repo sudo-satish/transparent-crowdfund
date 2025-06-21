@@ -27,6 +27,7 @@ export const getSummaryByFundId = async (id) => {
         {
             $match: {
                 fund: new mongoose.Types.ObjectId(id),
+                transactionType: 'credit'
             },
         },
         {

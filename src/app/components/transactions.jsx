@@ -5,23 +5,35 @@ import { convertToIndianCurrency, formatDate } from '@/utils/helper';
 import { useRouter } from 'next/navigation';
 import { FaRupeeSign } from 'react-icons/fa';
 import { config } from '@/config';
-import { FaHandHoldingHeart, FaUsers, FaShareAlt } from 'react-icons/fa';
+import {
+  FaHandHoldingHeart,
+  FaUsers,
+  FaShareAlt,
+  FaMoneyBillWave,
+} from 'react-icons/fa';
 import { MdLocationOn } from 'react-icons/md';
 import TopContributors from './TopContributors';
 import { useEffect, useState } from 'react';
 import ContributorsCount from './ContributorsCount';
 import AmountModal from './AmountModal';
 import NameModal from './NameModal';
+import RedeemModal from './RedeemModal';
 
-export default function Transactions({ fundId, summary, fund }) {
+export default function Transactions({ fundId, summary, fund, userId }) {
   const [isLoading, setIsLoading] = useState(true);
   const [transactions, setTransactions] = useState([]);
   const [shareError, setShareError] = useState('');
   const [isAmountModalOpen, setIsAmountModalOpen] = useState(false);
   const [isNameModalOpen, setIsNameModalOpen] = useState(false);
+  const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
   const [isCreatingPaymentLink, setIsCreatingPaymentLink] = useState(false);
+  const [isRedeeming, setIsRedeeming] = useState(false);
 
   const router = useRouter();
+
+  // Check if current user is the fund creator
+  const isFundCreator = fund?.createdBy === userId;
+  const currentBalance = summary?.totalBalance || 0;
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -53,8 +65,6 @@ export default function Transactions({ fundId, summary, fund }) {
   //     </div>
   //   );
   // }
-
-  const currentBalance = summary?.totalBalance || 0;
 
   const exportToCSV = () => {
     // Prepare CSV content
@@ -171,6 +181,37 @@ export default function Transactions({ fundId, summary, fund }) {
       alert('Failed to create payment link. Please try again.');
     } finally {
       setIsCreatingPaymentLink(false);
+    }
+  };
+
+  const handleRedeemSubmit = async (bankDetails) => {
+    setIsRedeeming(true);
+    try {
+      const response = await fetch(`/api/funds/${fundId}/redeem`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bankDetails),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert(
+          `Successfully redeemed ₹${data.amount.toLocaleString('en-IN')} to your account. The funds will be transferred within 2-3 business days.`
+        );
+        setIsRedeemModalOpen(false);
+        // Refresh the page to show updated balance
+        window.location.reload();
+      } else {
+        alert(data.message || 'Failed to redeem funds. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error redeeming funds:', error);
+      alert('Failed to redeem funds. Please try again.');
+    } finally {
+      setIsRedeeming(false);
     }
   };
 
@@ -312,6 +353,33 @@ export default function Transactions({ fundId, summary, fund }) {
               {isCreatingPaymentLink ? 'Creating...' : 'Make Payment'}
             </span>
           </motion.button>
+
+          {/* Redeem Button - Only show for fund creator */}
+          {isFundCreator && currentBalance > 0 && (
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{
+                delay: 0.55,
+                duration: 0.3,
+              }}
+              whileHover={{
+                scale: 1.03,
+                boxShadow: '0 0 20px rgba(59, 130, 246, 0.3)',
+                backgroundColor: 'rgb(37 99 235)',
+              }}
+              whileTap={{
+                scale: 0.97,
+                transition: { duration: 0.1 },
+              }}
+              onClick={() => setIsRedeemModalOpen(true)}
+              disabled={isRedeeming}
+              className='px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm font-medium transition-all duration-200 flex items-center justify-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed text-center'
+            >
+              <FaMoneyBillWave size={14} />
+              {isRedeeming ? 'Processing...' : 'Redeem Funds'}
+            </motion.button>
+          )}
 
           {transactions?.length > 0 && (
             <>
@@ -479,6 +547,15 @@ export default function Transactions({ fundId, summary, fund }) {
           onSubmit={createFixedAmountPaymentLink}
           isLoading={isCreatingPaymentLink}
           amount={fund.contributionAmount}
+        />
+
+        {/* Redeem Modal */}
+        <RedeemModal
+          isOpen={isRedeemModalOpen}
+          onClose={() => setIsRedeemModalOpen(false)}
+          onSubmit={handleRedeemSubmit}
+          isLoading={isRedeeming}
+          currentBalance={currentBalance}
         />
       </div>
     </div>
