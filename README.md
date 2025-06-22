@@ -46,5 +46,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - Show monthly analytics
 - Add payout
 - Add payout for description
-- Register a domain
-- Register a business
+- Register a domain = fundraiser.hisabbuddy.com
+- Register a business = Get a GST No and a current account
