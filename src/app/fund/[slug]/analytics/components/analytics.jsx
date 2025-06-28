@@ -82,8 +82,8 @@ export default function Analytics({ transactions, summary }) {
 
   // Prepare data for pie chart
   const pieChartData = [
-    { name: 'Total Received', value: summary.total_credited },
-    { name: 'Total Spent', value: summary.total_debited || 0 },
+    { name: 'Total Received', value: summary.totalCredited },
+    { name: 'Total Spent', value: summary.totalDebited || 0 },
   ];
 
   const COLORS = ['#22c55e', '#ef4444'];

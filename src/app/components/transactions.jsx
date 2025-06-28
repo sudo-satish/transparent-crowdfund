@@ -384,7 +384,6 @@ export default function Transactions({ fundId, summary, fund, userId }) {
           {transactions?.length > 0 && (
             <>
               <motion.button
-                disabled={true}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{
@@ -400,7 +399,7 @@ export default function Transactions({ fundId, summary, fund, userId }) {
                   scale: 0.97,
                   transition: { duration: 0.1 },
                 }}
-                onClick={() => router.push('/analytics')}
+                onClick={() => router.push(`/fund/${fund.slug}/analytics`)}
                 className='px-3 py-1.5 bg-purple-600 text-white rounded-lg text-sm font-medium transition-all duration-200'
               >
                 View Analytics
