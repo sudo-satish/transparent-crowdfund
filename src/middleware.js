@@ -11,7 +11,12 @@ export default authMiddleware({
         "/razorpay/callback",
         "/api/razorpay/webhook",
         "/api/razorpay/payment-link",
-        "/api/razorpay/fixed-payment-link"
+        "/api/razorpay/fixed-payment-link",
+        "/privacy",
+        "/contact",
+        "/terms",
+        "/refunds",
+        "/shipping"
     ]
 });
 
