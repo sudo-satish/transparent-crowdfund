@@ -54,7 +54,7 @@ export default async function Home() {
               </span>
             </h1>
             <p className="text-lg md:text-xl text-gray-600 mb-8 md:mb-12 max-w-3xl mx-auto">
-              Whether it's a group trip, team event, or community project, GroupFund makes it easy to collect and track contributions from everyone involved.
+              Whether it&apos;s a group trip, team event, or community project, GroupFund makes it easy to collect and track contributions from everyone involved.
             </p>
             <div className="flex justify-center gap-4">
               {!userId ? (
