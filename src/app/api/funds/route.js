@@ -5,6 +5,7 @@ import { db } from "@/services/db";
 import { Summary } from "@/services/models/summary";
 import Razorpay from "razorpay";
 import slugify from 'slugify';
+import { sanitizeInput } from "@/utils/helper";
 
 const razorpayInstance = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
@@ -83,12 +84,15 @@ export async function POST(request) {
             return new NextResponse("Unauthorized", { status: 401 });
         }
 
+        // Sanitize user input to prevent XSS attacks
+        const sanitizedTitle = sanitizeInput(title);
+        const sanitizedDescription = description ? sanitizeInput(description) : '';
 
-        const slug = await createSlug(title);
+        const slug = await createSlug(sanitizedTitle);
 
         const fund = await Fund.create({
-            title,
-            description,
+            title: sanitizedTitle,
+            description: sanitizedDescription,
             goal,
             slug,
             createdBy,

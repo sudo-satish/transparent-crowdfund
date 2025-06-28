@@ -13,6 +13,7 @@ import { Summary } from "@/services/models/summary";
 import { Transaction } from "@/services/models/transactions";
 import { validateWebhookSignature } from 'razorpay/dist/utils/razorpay-utils';
 import { config } from '@/config';
+import { sanitizeInput } from '@/utils/helper';
 
 export async function POST(request) {
     console.log('Webhook received');
@@ -66,6 +67,10 @@ export async function POST(request) {
 
     const updatedSummary = await Summary.findOne({ fund: fundId });
 
+    // Sanitize user input to prevent XSS attacks
+    const rawName = body.payload.payment?.entity?.notes?.name || body.payload.payment?.entity?.customer?.name || "Anonymous";
+    const sanitizedName = sanitizeInput(rawName);
+
     await Transaction.create({
         amount: body.payload.payment.entity.amount, // Convert from paise to rupees
         date: new Date(body.payload.payment.entity.created_at * 1000),
@@ -76,7 +81,7 @@ export async function POST(request) {
         email: body.payload.payment.entity.email,
         contact: body.payload.payment.entity.contact,
         closingBalance: updatedSummary.totalBalance,
-        name: body.payload.payment?.entity?.notes?.name || body.payload.payment?.entity?.customer?.name || "Anonymous",
+        name: sanitizedName,
         fund: fundId,
     });
 

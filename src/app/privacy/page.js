@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { escapeHtml } from "@/utils/helper";
 
 export default function PrivacyPage() {
     return (
@@ -30,7 +31,7 @@ export default function PrivacyPage() {
                             Privacy Policy
                         </h1>
                         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                            How we collect, use, and protect your personal information.
+                            {escapeHtml("How we collect, use, and protect your personal information.")}
                         </p>
                         <p className="text-sm text-gray-500 mt-4">
                             Last updated: {new Date().toLocaleDateString()}

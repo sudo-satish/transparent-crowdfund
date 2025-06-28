@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { FaPlus, FaRupeeSign, FaTrash } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { escapeHtml } from '@/utils/helper';
 
 const canDeleteFund = process.env.NODE_ENV === 'development';
 
@@ -31,7 +32,7 @@ export default function DashboardUI() {
     }, []);
 
     const handleDeleteFund = async (fundId, fundTitle) => {
-        if (!confirm(`Are you sure you want to delete "${fundTitle}"? This action cannot be undone.`)) {
+        if (!confirm(`Are you sure you want to delete "${escapeHtml(fundTitle)}"? This action cannot be undone.`)) {
             return;
         }
 
@@ -131,7 +132,7 @@ export default function DashboardUI() {
                                                 className="flex-1"
                                             >
                                                 <h3 className="text-xl font-semibold text-gray-800 group-hover:text-indigo-600 transition-colors duration-200">
-                                                    {fund.title}
+                                                    {escapeHtml(fund.title)}
                                                 </h3>
                                             </Link>
                                             <div className="flex items-center gap-2">
@@ -168,7 +169,7 @@ export default function DashboardUI() {
 
                                         {fund.description && (
                                             <p className="text-gray-600 mb-6 line-clamp-2 min-h-[3rem]">
-                                                {fund.description}
+                                                {escapeHtml(fund.description)}
                                             </p>
                                         )}
 

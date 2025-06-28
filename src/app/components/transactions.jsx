@@ -1,7 +1,11 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { convertToIndianCurrency, formatDate } from '@/utils/helper';
+import {
+  convertToIndianCurrency,
+  formatDate,
+  escapeHtml,
+} from '@/utils/helper';
 import { useRouter } from 'next/navigation';
 import { FaRupeeSign } from 'react-icons/fa';
 import { config } from '@/config';
@@ -98,8 +102,8 @@ export default function Transactions({ fundId, summary, fund, userId }) {
 
   const handleShare = async () => {
     const shareData = {
-      title: `Support ${fund.title}`,
-      text: `Help us reach our goal! Current balance: ${convertToIndianCurrency(currentBalance)}. ${fund.description || 'Join us in making a difference!'}`,
+      title: `Support ${escapeHtml(fund.title)}`,
+      text: `Help us reach our goal! Current balance: ${convertToIndianCurrency(currentBalance)}. ${escapeHtml(fund.description) || 'Join us in making a difference!'}`,
       url: window.location.href,
     };
 
@@ -242,7 +246,7 @@ export default function Transactions({ fundId, summary, fund, userId }) {
           >
             <MdLocationOn className='text-xl text-gray-600' />
             <h2 className='text-xl font-semibold text-gray-700'>
-              {fund.title}
+              {escapeHtml(fund.title)}
             </h2>
           </motion.div>
         </motion.div>
@@ -256,7 +260,7 @@ export default function Transactions({ fundId, summary, fund, userId }) {
           {fund.description && (
             <div className='flex items-start gap-3'>
               <FaUsers className='text-gray-400 mt-1' />
-              <p className='text-gray-600'>{fund.description}</p>
+              <p className='text-gray-600'>{escapeHtml(fund.description)}</p>
             </div>
           )}
         </motion.div>
@@ -492,11 +496,11 @@ export default function Transactions({ fundId, summary, fund, userId }) {
                     <div>
                       {transaction.name && (
                         <p className='text-xs text-gray-500 font-normal mb-0.5'>
-                          {transaction.name}
+                          {escapeHtml(transaction.name)}
                         </p>
                       )}
                       <p className='font-medium text-gray-800'>
-                        {transaction.contact}
+                        {escapeHtml(transaction.contact)}
                       </p>
                       <p className='text-xs text-gray-400 mt-0.5'>
                         {formatDate(transaction.date)}

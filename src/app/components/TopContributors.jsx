@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { FaCrown } from 'react-icons/fa';
-import { convertToIndianCurrency } from '@/utils/helper';
+import { convertToIndianCurrency, escapeHtml } from '@/utils/helper';
 
 export default function TopContributors({ contributor }) {
   if (!contributor._id) return null;
@@ -27,7 +27,9 @@ export default function TopContributors({ contributor }) {
         >
           <div className='flex items-center gap-3'>
             <div>
-              <p className='font-medium text-gray-800'>{contributor._id}</p>
+              <p className='font-medium text-gray-800'>
+                {escapeHtml(contributor._id)}
+              </p>
             </div>
           </div>
           <div className='flex items-center gap-1 text-green-600 font-semibold'>

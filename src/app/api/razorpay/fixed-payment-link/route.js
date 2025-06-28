@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import Razorpay from "razorpay";
 import { Fund } from "@/services/models/fund";
 import { config } from "@/config";
+import { sanitizeInput } from "@/utils/helper";
 
 const razorpayInstance = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
@@ -27,6 +28,9 @@ export async function POST(request) {
             return new NextResponse("No fixed contribution amount set for this fund", { status: 400 });
         }
 
+        // Sanitize user input to prevent XSS attacks
+        const sanitizedName = name ? sanitizeInput(name) : "Anonymous Contributor";
+
         // Convert amount to paise (Razorpay expects amount in paise)
         const amountInPaise = Math.round(fund.contributionAmount * 100);
 
@@ -36,7 +40,7 @@ export async function POST(request) {
             accept_partial: false,
             description: `Contribution for ${fund.title}`,
             customer: {
-                name: name || "Anonymous Contributor",
+                name: sanitizedName,
                 email: "contributor@example.com",
                 contact: "+919000090000"
             },
@@ -48,7 +52,7 @@ export async function POST(request) {
             notes: {
                 fund_id: fundId,
                 fund_title: fund.title,
-                name: name || "Anonymous"
+                name: sanitizedName
             },
             callback_url: `${config.razorpay.callback_url}?fund_slug=${fund.slug}&fundId=${fundId}`,
             callback_method: "get",
