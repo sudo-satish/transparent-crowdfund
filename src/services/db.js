@@ -2,8 +2,6 @@
 const mongoose = require('mongoose');
 const uri = process.env.MONGODB_URI;
 
-console.log(uri);
-
 const clientOptions = { serverApi: { version: '1', strict: true, deprecationErrors: true } };
 mongoose.connect(uri, clientOptions);
 

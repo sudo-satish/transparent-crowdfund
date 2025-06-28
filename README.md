@@ -41,4 +41,10 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## TODO:
 
-- Send reminder list email list to my email
+- Send reminder list email list to my email (Parked for now)
+- Add platform fee
+- Show monthly analytics
+- Add payout
+- Add payout for description
+- Register a domain = fundraiser.hisabbuddy.com
+- Register a business = Get a GST No and a current account

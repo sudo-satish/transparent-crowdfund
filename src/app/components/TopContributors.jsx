@@ -1,11 +1,11 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { FaCrown, FaRupeeSign } from 'react-icons/fa';
+import { FaCrown } from 'react-icons/fa';
 import { convertToIndianCurrency } from '@/utils/helper';
 
 export default function TopContributors({ contributor }) {
-  console.log(contributor);
+  if (!contributor._id) return null;
   return (
     <motion.div
       initial={{ opacity: 0 }}

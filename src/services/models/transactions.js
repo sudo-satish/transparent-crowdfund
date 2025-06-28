@@ -5,12 +5,16 @@ const transactionSchema = new mongoose.Schema({
     description: String,
     date: Date,
     type: String,
-    transaction_type: String,
-    transaction_id: String,
+    transactionType: String,
+    transactionId: String,
     email: String,
     contact: String,
-    closing_balance: Number,
+    closingBalance: Number,
     name: String,
+    fund: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Fund',
+    },
 });
 
 export const Transaction = mongoose.models.Transaction || mongoose.model('Transaction', transactionSchema);

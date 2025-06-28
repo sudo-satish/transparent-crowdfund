@@ -1,7 +1,7 @@
 import moment from "moment";
 
 const convertToIndianCurrency = (paise) => {
-    return `₹${paise / 100}`;
+    return `₹${(paise / 100).toFixed(2)}`;
 };
 
 const formatDate = (date) => {
