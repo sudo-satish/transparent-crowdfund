@@ -1,4 +1,4 @@
-## crowdfund.eezydine.com
+## myfund.hisabbuddy.com
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
@@ -48,3 +48,11 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - Add payout for description
 - Register a domain = fundraiser.hisabbuddy.com
 - Register a business = Get a GST No and a current account
+
+TODO
+Add Following pages
+
+- Add contact us
+- Add Shipping Policy
+- Add Terms and conditions
+- Cancellation and refunds

@@ -13,14 +13,16 @@ export default async function Home() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
               <Link href="/" className="text-2xl font-bold text-indigo-600">
-                GroupFund
+                MyFund
               </Link>
             </div>
             <div className="flex items-center gap-4">
               {!userId ? (
                 <>
                   <SignInButton mode="modal">
-                    <Button variant="ghost" size="sm" className="text-sm">Sign In</Button>
+                    <Button variant="outline" size="sm" className="text-sm border-indigo-600 text-indigo-600 hover:bg-indigo-50">
+                      Sign In
+                    </Button>
                   </SignInButton>
                   <SignUpButton mode="modal">
                     <Button size="sm" className="text-sm">Get Started</Button>
@@ -54,7 +56,7 @@ export default async function Home() {
               </span>
             </h1>
             <p className="text-lg md:text-xl text-gray-600 mb-8 md:mb-12 max-w-3xl mx-auto">
-              Whether it&apos;s a group trip, team event, or community project, GroupFund makes it easy to collect and track contributions from everyone involved.
+              Whether it&apos;s a group trip, team event, or community project, MyFund makes it easy to collect and track contributions from everyone involved.
             </p>
             <div className="flex justify-center gap-4">
               {!userId ? (
