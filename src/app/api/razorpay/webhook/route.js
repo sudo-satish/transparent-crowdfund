@@ -14,6 +14,7 @@ import { Transaction } from "@/services/models/transactions";
 import { validateWebhookSignature } from 'razorpay/dist/utils/razorpay-utils';
 import { config } from '@/config';
 import { sanitizeInput } from '@/utils/helper';
+import mongoose from 'mongoose';
 
 export async function POST(request) {
     console.log('Webhook received');
@@ -39,7 +40,8 @@ export async function POST(request) {
     }
 
     // Extract fund_id from payment notes
-    const fundId = body.payload.payment.entity.notes?.fund_id;
+    // const fundId = body.payload.payment.entity.notes?.fund_id;
+    const fundId = new mongoose.Types.ObjectId('6856ed21199305a9bc6a5fc4');
 
     if (!fundId) {
         console.error('No fund_id found in payment notes');
