@@ -338,7 +338,7 @@ export default function Transactions({ fundId, summary, fund, userId }) {
               transition: { duration: 0.1 },
             }}
             onClick={handlePaymentClick}
-            disabled={isCreatingPaymentLink || true}
+            disabled={isCreatingPaymentLink || false}
             className='group relative px-3 py-1.5 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed'
           >
             <motion.div

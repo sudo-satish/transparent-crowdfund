@@ -9,6 +9,7 @@
 
 import { headers } from 'next/headers'
 import { db } from "@/services/db";
+import { Fund } from '@/services/models/fund';
 import { Summary } from "@/services/models/summary";
 import { Transaction } from "@/services/models/transactions";
 import { validateWebhookSignature } from 'razorpay/dist/utils/razorpay-utils';
@@ -19,6 +20,7 @@ import mongoose from 'mongoose';
 export async function POST(request) {
     console.log('Webhook received');
     const body = await request.json();
+    console.log(body);
     const headersList = await headers();
     const signature = headersList.get('x-razorpay-signature');
 
@@ -40,29 +42,28 @@ export async function POST(request) {
     }
 
     // Extract fund_id from payment notes
-    // const fundId = body.payload.payment.entity.notes?.fund_id;
-    const fundId = new mongoose.Types.ObjectId('6856ed21199305a9bc6a5fc4');
+    const fundIdStr = body?.payload?.payment?.entity?.notes?.fund_id;
+    if (!fundIdStr) return new Response('No fund_id found', { status: 400 });
+    const fundId = new mongoose.Types.ObjectId(fundIdStr);
 
-    if (!fundId) {
-        console.error('No fund_id found in payment notes');
-        return new Response('No fund_id found', { status: 400 });
-    }
+    const isCredit = body.event === 'payment.captured';
+    const amount = body.payload.payment.entity.amount;
 
     // Find or create summary for the specific fund
     let summary = await Summary.findOne({ fund: fundId });
     if (!summary) {
         summary = await Summary.create({
             fund: fundId,
-            totalCredited: body.event === 'payment.captured' ? body.payload.payment.entity.amount : 0,
-            totalBalance: body.event === 'payment.captured' ? body.payload.payment.entity.amount : -body.payload.payment.entity.amount,
-            totalDebited: body.event === 'payment.captured' ? 0 : body.payload.payment.entity.amount,
+            totalCredited: isCredit ? amount : 0,
+            totalDebited:  isCredit ? 0      : amount,
+            totalBalance:  isCredit ? amount : -amount,
         });
     } else {
         await Summary.findByIdAndUpdate(summary._id, {
             $inc: {
-                totalCredited: body.event === 'payment.captured' ? body.payload.payment.entity.amount : 0,
-                totalBalance: body.event === 'payment.captured' ? body.payload.payment.entity.amount : -body.payload.payment.entity.amount,
-                totalDebited: body.event === 'payment.captured' ? 0 : body.payload.payment.entity.amount,
+                 totalCredited: isCredit ? amount : 0,
+                 totalDebited:  isCredit ? 0      : amount,
+                 totalBalance:  isCredit ? amount : -amount,
             }
         });
     }
@@ -86,6 +87,12 @@ export async function POST(request) {
         name: sanitizedName,
         fund: fundId,
     });
+
+    await Fund.findByIdAndUpdate(
+        fundId,
+        { $inc: { currentAmount: isCredit ? amount : -amount } }, // if you store paise
+        { new: false }
+      );
 
     return new Response('Webhook received', { status: 200 });
 }
