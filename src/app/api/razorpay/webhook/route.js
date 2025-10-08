@@ -47,7 +47,8 @@ export async function POST(request) {
     const fundId = new mongoose.Types.ObjectId(fundIdStr);
 
     const isCredit = body.event === 'payment.captured';
-    const amount = body.payload.payment.entity.amount;
+    const amountInPaise = body.payload.payment.entity.amount;
+    const amount = (amountInPaise / 100);
 
     // Find or create summary for the specific fund
     let summary = await Summary.findOne({ fund: fundId });
@@ -75,7 +76,7 @@ export async function POST(request) {
     const sanitizedName = sanitizeInput(rawName);
 
     await Transaction.create({
-        amount: body.payload.payment.entity.amount, // Convert from paise to rupees
+        amount: amount, 
         date: new Date(body.payload.payment.entity.created_at * 1000),
         type: body.payload.payment.entity.event,
         transactionType: body.event === 'payment.captured' ? 'credit' : 'debit',

@@ -189,7 +189,7 @@ export default function DashboardUI() {
                                                             <span className="text-sm text-gray-500">Raised</span>
                                                             <span className="font-medium text-gray-800 flex items-center">
                                                                 <FaRupeeSign className="text-xs mr-1" />
-                                                                {fund.currentAmount.toLocaleString()}
+                                                                {fund.currentAmount.toFixed(2).toLocaleString()}
                                                             </span>
                                                         </div>
 
