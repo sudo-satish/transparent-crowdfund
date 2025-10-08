@@ -39,9 +39,12 @@ export async function POST(request, { params }) {
             return new NextResponse("No funds available to redeem", { status: 400 });
         }
 
-        if (amount * 100 > currentBalance) {
+        if (amount > currentBalance) {
             return new NextResponse("Insufficient funds to redeem", { status: 400 });
         }
+
+        const newBalance = currentBalance - amount;
+
 
         // Create a debit transaction for the redemption
         const redemptionTransaction = await Transaction.create({
@@ -51,7 +54,7 @@ export async function POST(request, { params }) {
             contact: 'REDEMPTION',
             name: accountHolderName,
             date: new Date(),
-            closingBalance: 0, // After redemption, balance becomes 0
+            closingBalance: newBalance, 
             notes: `Redeemed to account: ${accountNumber} (${ifscCode})`
         });
 
@@ -59,9 +62,17 @@ export async function POST(request, { params }) {
         await Summary.findOneAndUpdate(
             { fund: id },
             {
-                totalDebited: (summary.totalDebited || 0) + amount,
-                totalBalance: 0
+                $inc: {
+                    totalDebited: amount,
+                    totalBalance: -amount  // Subtract the amount, 
+                }
             }
+        );
+
+        
+        await Fund.findByIdAndUpdate(
+            id,
+            { $inc: { currentAmount: -amount } }
         );
 
         return NextResponse.json({

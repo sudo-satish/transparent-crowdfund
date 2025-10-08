@@ -53,7 +53,7 @@ export default function RedeemModal({
     // Allow only numbers and decimal point
     if (/^\d*\.?\d{0,2}$/.test(value) || value === '') {
       const numValue = parseFloat(value) || 0;
-      if (numValue * 100 <= currentBalance) {
+      if (numValue <= currentBalance) {
         setAmount(value);
       }
     }
