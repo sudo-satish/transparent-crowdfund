@@ -65,7 +65,7 @@ export default function Analytics({ transactions, summary }) {
       };
     }
 
-    if (transaction.transaction_type === 'credit') {
+    if (transaction.transactionType === 'credit') {
       acc[monthYear].received += transaction.amount;
     } else {
       acc[monthYear].spent += transaction.amount;
