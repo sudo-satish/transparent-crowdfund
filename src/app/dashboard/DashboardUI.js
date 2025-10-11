@@ -1,6 +1,7 @@
 'use client';
 
 import Link from "next/link";
+import { LoadingLink } from "../components/LoadingLink";
 import { Button } from "@/components/ui/button";
 import { FaPlus, FaRupeeSign, FaTrash } from "react-icons/fa";
 import { motion } from "framer-motion";
@@ -82,12 +83,12 @@ export default function DashboardUI() {
                     className="flex justify-between items-center mb-8"
                 >
                     <h1 className="text-3xl font-bold text-gray-800">My Funds</h1>
-                    <Link href="/create-fund">
+                    <LoadingLink href="/create-fund">
                         <Button className="bg-indigo-600 hover:bg-indigo-700 transition-all duration-200 transform hover:scale-105">
                             <FaPlus className="mr-2" />
                             Create Fund
                         </Button>
-                    </Link>
+                    </LoadingLink>
                 </motion.div>
 
                 {isLoading ? (
@@ -104,11 +105,11 @@ export default function DashboardUI() {
                     >
                         <h2 className="text-2xl font-semibold text-gray-700 mb-4">No funds created yet</h2>
                         <p className="text-gray-600 mb-8 max-w-md mx-auto">Start by creating your first fund to collect contributions from your community</p>
-                        <Link href="/create-fund">
+                        <LoadingLink href="/create-fund">
                             <Button className="bg-indigo-600 hover:bg-indigo-700 transition-all duration-200 transform hover:scale-105">
                                 Create Your First Fund
                             </Button>
-                        </Link>
+                        </LoadingLink>
                     </motion.div>
                 ) : (
                     <motion.div
@@ -127,14 +128,14 @@ export default function DashboardUI() {
                                 <div className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 overflow-hidden">
                                     <div className="p-6">
                                         <div className="flex items-start justify-between mb-4">
-                                            <Link
+                                            <LoadingLink
                                                 href={`/fund/${fund.slug}`}
                                                 className="flex-1"
                                             >
                                                 <h3 className="text-xl font-semibold text-gray-800 group-hover:text-indigo-600 transition-colors duration-200">
                                                     {escapeHtml(fund.title)}
                                                 </h3>
-                                            </Link>
+                                            </LoadingLink>
                                             <div className="flex items-center gap-2">
                                                 <span className={`px-3 py-1 rounded-full text-xs font-medium ${fund.status === 'active' ? 'bg-green-100 text-green-700' :
                                                     fund.status === 'completed' ? 'bg-blue-100 text-blue-700' :

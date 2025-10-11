@@ -7,6 +7,7 @@ import {
   escapeHtml,
 } from '@/utils/helper';
 import { useRouter } from 'next/navigation';
+import { useLoading } from './LoadingProvider';
 import { FaRupeeSign } from 'react-icons/fa';
 import { config } from '@/config';
 import {
@@ -34,6 +35,7 @@ export default function Transactions({ fundId, summary, fund, userId }) {
   const [isRedeeming, setIsRedeeming] = useState(false);
 
   const router = useRouter();
+  const { setIsLoading: setGlobalLoading } = useLoading();
 
   // Check if current user is the fund creator
   const isFundCreator = fund?.createdBy === userId;
@@ -403,7 +405,13 @@ export default function Transactions({ fundId, summary, fund, userId }) {
                   scale: 0.97,
                   transition: { duration: 0.1 },
                 }}
-                onClick={() => router.push(`/fund/${fund.slug}/analytics`)}
+                onClick={() => {
+                  setGlobalLoading(true);
+                  setTimeout(() => {
+                    router.push(`/fund/${fund.slug}/analytics`);
+                    setTimeout(() => setGlobalLoading(false), 500);
+                  }, 100);
+                }}
                 className='px-3 py-1.5 bg-purple-600 text-white rounded-lg text-sm font-medium transition-all duration-200'
               >
                 View Analytics

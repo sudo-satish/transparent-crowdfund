@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { FaCheckCircle, FaHeart, FaRupeeSign, FaArrowRight, FaExclamationTriangle, FaTimesCircle } from 'react-icons/fa';
+import { useLoading } from '@/app/components/LoadingProvider';
 
 export default function CallbackPage() {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const { setIsLoading } = useLoading();
     const [countdown, setCountdown] = useState(5);
     const [showRedirect, setShowRedirect] = useState(false);
     const [paymentStatus, setPaymentStatus] = useState('success'); // success, failed, pending
@@ -44,7 +46,8 @@ export default function CallbackPage() {
         const interval = setInterval(() => {
             setCountdown((prev) => {
                 if (prev <= 1) {
-                    // Redirect based on payment status
+                    // Show loading and redirect based on payment status
+                    setIsLoading(true);
                     if (paymentStatus === 'success' && fundSlug) {
                         router.push(`/fund/${fundSlug}`);
                     } else {
@@ -238,6 +241,7 @@ export default function CallbackPage() {
                     >
                         <button
                             onClick={() => {
+                                setIsLoading(true);
                                 if (paymentStatus === 'success' && fundSlug) {
                                     router.push(`/fund/${fundSlug}`);
                                 } else {
@@ -254,7 +258,10 @@ export default function CallbackPage() {
                         </button>
 
                         <button
-                            onClick={() => router.push(`/fund/${fundSlug}`)}
+                            onClick={() => {
+                                setIsLoading(true);
+                                router.push('/dashboard');
+                            }}
                             className="w-full bg-gray-100 text-gray-700 py-2 px-6 rounded-lg font-medium hover:bg-gray-200 transition-all duration-200"
                         >
                             Go to Dashboard

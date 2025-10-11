@@ -3,12 +3,14 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
+import { useLoading } from '../components/LoadingProvider';
 import { Button } from '@/components/ui/button';
 import { toast } from 'react-hot-toast';
 
 export default function CreateFund() {
     const router = useRouter();
     const { user } = useUser();
+    const { setIsLoading: setGlobalLoading } = useLoading();
     const [isLoading, setIsLoading] = useState(false);
     const [customerDecidesAmount, setCustomerDecidesAmount] = useState(false);
 
@@ -40,7 +42,11 @@ export default function CreateFund() {
             }
 
             toast.success('Fund created successfully!');
-            router.push('/dashboard');
+            setGlobalLoading(true);
+            setTimeout(() => {
+                router.push('/dashboard');
+                setTimeout(() => setGlobalLoading(false), 500);
+            }, 100);
         } catch (error) {
             toast.error('Failed to create fund. Please try again.');
             console.error('Error creating fund:', error);
@@ -140,7 +146,13 @@ export default function CreateFund() {
                             <Button
                                 type="button"
                                 variant="outline"
-                                onClick={() => router.back()}
+                                onClick={() => {
+                                    setGlobalLoading(true);
+                                    setTimeout(() => {
+                                        router.back();
+                                        setTimeout(() => setGlobalLoading(false), 500);
+                                    }, 100);
+                                }}
                                 disabled={isLoading}
                             >
                                 Cancel

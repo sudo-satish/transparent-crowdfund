@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import { useLoading } from '@/app/components/LoadingProvider';
 import { convertToIndianCurrency } from '@/utils/helper';
 import { useState, useEffect } from 'react';
 import {
@@ -48,6 +49,7 @@ function useWindowSize() {
 
 export default function Analytics({ transactions, summary }) {
   const router = useRouter();
+  const { setIsLoading } = useLoading();
   const { width } = useWindowSize();
 
   // Process transactions data for monthly chart
@@ -101,7 +103,10 @@ export default function Analytics({ transactions, summary }) {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => router.push('/')}
+            onClick={() => {
+              setIsLoading(true);
+              router.back();
+            }}
             className='px-2 sm:px-4 py-1.5 sm:py-2 bg-gray-600 text-white rounded-lg text-xs sm:text-sm font-medium hover:bg-gray-700 transition-colors'
           >
             Back to Transactions

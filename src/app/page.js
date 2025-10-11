@@ -1,5 +1,6 @@
 import { SignInButton, SignUpButton, UserButton, auth } from "@clerk/nextjs";
 import Link from "next/link";
+import { LoadingLink } from "./components/LoadingLink";
 import { Button } from "@/components/ui/button";
 
 export default async function Home() {
@@ -30,11 +31,11 @@ export default async function Home() {
                 </>
               ) : (
                 <>
-                  <Link href="/dashboard">
+                  <LoadingLink href="/dashboard">
                     <Button variant="ghost" className="text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 font-semibold">
                       Dashboard
                     </Button>
-                  </Link>
+                  </LoadingLink>
                   <UserButton afterSignOutUrl="/" />
                 </>
               )}
@@ -66,11 +67,11 @@ export default async function Home() {
                   </Button>
                 </SignUpButton>
               ) : (
-                <Link href="/create-fund">
+                <LoadingLink href="/create-fund">
                   <Button size="lg" className="text-base md:text-lg px-6 md:px-8 bg-indigo-600 hover:bg-indigo-700">
                     Create Fund
                   </Button>
-                </Link>
+                </LoadingLink>
               )}
             </div>
           </div>
@@ -108,11 +109,11 @@ export default async function Home() {
                 </p>
                 {index === 0 && (
                   <div className="mt-6">
-                    <Link href="/create-fund">
+                    <LoadingLink href="/create-fund">
                       <Button className="w-full bg-indigo-600 hover:bg-indigo-700">
                         Create Fund Now
                       </Button>
-                    </Link>
+                    </LoadingLink>
                   </div>
                 )}
               </div>
@@ -176,11 +177,11 @@ export default async function Home() {
               </Button>
             </SignUpButton>
           ) : (
-            <Link href="/create-fund">
+            <LoadingLink href="/create-fund">
               <Button size="lg" variant="secondary" className="text-lg px-8">
                 Create Fund
               </Button>
-            </Link>
+            </LoadingLink>
           )}
         </div>
       </section>
