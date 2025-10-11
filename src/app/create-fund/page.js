@@ -43,10 +43,7 @@ export default function CreateFund() {
 
             toast.success('Fund created successfully!');
             setGlobalLoading(true);
-            setTimeout(() => {
-                router.push('/dashboard');
-                setTimeout(() => setGlobalLoading(false), 500);
-            }, 100);
+            router.push('/dashboard');
         } catch (error) {
             toast.error('Failed to create fund. Please try again.');
             console.error('Error creating fund:', error);
@@ -148,10 +145,7 @@ export default function CreateFund() {
                                 variant="outline"
                                 onClick={() => {
                                     setGlobalLoading(true);
-                                    setTimeout(() => {
-                                        router.back();
-                                        setTimeout(() => setGlobalLoading(false), 500);
-                                    }, 100);
+                                    router.back();
                                 }}
                                 disabled={isLoading}
                             >

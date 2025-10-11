@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
-import { ClipLoader } from 'react-spinners';
+import { HashLoader  } from 'react-spinners';
 
 const LoadingContext = createContext();
 
@@ -28,8 +28,8 @@ export const LoadingProvider = ({ children }) => {
       {children}
       {isLoading && (
         <div className="fixed inset-0 bg-black/20 backdrop-blur-sm z-[9999] flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg flex flex-col items-center gap-3">
-            <ClipLoader color="#4f46e5" size={35} />
+          <div className="bg-white p-8 rounded-lg shadow-lg flex flex-col items-center gap-3">
+            <HashLoader  color="#4f46e5" size={35} />
             <p className="text-gray-600 font-medium">Loading...</p>
           </div>
         </div>

@@ -37,6 +37,7 @@ export const getSummaryByFundId = async (id) => {
             },
         },
     ]).exec();
+    console.log(contributorCount)
 
     summary.topContributor = topContributor[0] ?? {};
     summary.contributorCount = contributorCount.length ?? 0;

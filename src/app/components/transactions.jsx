@@ -407,10 +407,7 @@ export default function Transactions({ fundId, summary, fund, userId }) {
                 }}
                 onClick={() => {
                   setGlobalLoading(true);
-                  setTimeout(() => {
-                    router.push(`/fund/${fund.slug}/analytics`);
-                    setTimeout(() => setGlobalLoading(false), 500);
-                  }, 100);
+                  router.push(`/fund/${fund.slug}/analytics`);
                 }}
                 className='px-3 py-1.5 bg-purple-600 text-white rounded-lg text-sm font-medium transition-all duration-200'
               >

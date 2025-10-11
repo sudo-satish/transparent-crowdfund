@@ -105,10 +105,7 @@ export default function Analytics({ transactions, summary }) {
             whileTap={{ scale: 0.98 }}
             onClick={() => {
               setIsLoading(true);
-              setTimeout(() => {
-                router.push('/dashboard');
-                setTimeout(() => setIsLoading(false), 500);
-              }, 100);
+              router.push('/dashboard');
             }}
             className='px-2 sm:px-4 py-1.5 sm:py-2 bg-gray-600 text-white rounded-lg text-xs sm:text-sm font-medium hover:bg-gray-700 transition-colors'
           >

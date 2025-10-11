@@ -10,11 +10,11 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "CrowdFund - Fund Your Dreams",
-  description: "A platform for creators to fund their dreams through community support.",
+  description:
+    "A platform for creators to fund their dreams through community support.",
 };
 
 export default async function RootLayout({ children }) {
-
   return (
     <ClerkProvider>
       <html lang="en">
