@@ -52,6 +52,7 @@ export async function POST(request) {
 
     // Find or create summary for the specific fund
     let summary = await Summary.findOne({ fund: fundId });
+    let newClosingBalance;
     if (!summary) {
         summary = await Summary.create({
             fund: fundId,
@@ -59,7 +60,9 @@ export async function POST(request) {
             totalDebited:  isCredit ? 0      : amount,
             totalBalance:  isCredit ? amount : -amount,
         });
+        newClosingBalance = summary.totalBalance;
     } else {
+        newClosingBalance = summary.totalBalance + (isCredit ? amount : -amount);
         await Summary.findByIdAndUpdate(summary._id, {
             $inc: {
                  totalCredited: isCredit ? amount : 0,
@@ -69,7 +72,6 @@ export async function POST(request) {
         });
     }
 
-    const updatedSummary = await Summary.findOne({ fund: fundId });
 
     // Sanitize user input to prevent XSS attacks
     const rawName = body.payload.payment?.entity?.notes?.name || body.payload.payment?.entity?.customer?.name || "Anonymous";
@@ -84,7 +86,7 @@ export async function POST(request) {
         description: body.payload.payment.entity.description,
         email: body.payload.payment.entity.email,
         contact: body.payload.payment.entity.contact,
-        closingBalance: updatedSummary.totalBalance,
+        closingBalance: newClosingBalance,
         name: sanitizedName,
         fund: fundId,
     });
