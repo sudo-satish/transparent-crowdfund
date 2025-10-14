@@ -124,17 +124,17 @@ export default function DashboardUI() {
                                 whileHover={{ scale: 1.02 }}
                                 className="group"
                             >
+                                <LoadingLink href={`/fund/${fund.slug}`}>
                                 <div className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 overflow-hidden">
                                     <div className="p-6">
                                         <div className="flex items-start justify-between mb-4">
-                                            <LoadingLink
-                                                href={`/fund/${fund.slug}`}
+                                            <div
                                                 className="flex-1"
                                             >
                                                 <h3 className="text-xl font-semibold text-gray-800 group-hover:text-indigo-600 transition-colors duration-200">
                                                     {escapeHtml(fund.title)}
                                                 </h3>
-                                            </LoadingLink>
+                                            </div>
                                             <div className="flex items-center gap-2">
                                                 <span className={`px-3 py-1 rounded-full text-xs font-medium ${fund.status === 'active' ? 'bg-green-100 text-green-700' :
                                                     fund.status === 'completed' ? 'bg-blue-100 text-blue-700' :
@@ -219,6 +219,7 @@ export default function DashboardUI() {
                                         </div>
                                     </div>
                                 </div>
+                                </LoadingLink>
                             </motion.div>
                         ))}
                     </motion.div>

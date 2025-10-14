@@ -40,6 +40,7 @@ export default function Transactions({ fundId, summary, fund, userId }) {
   // Check if current user is the fund creator
   const isFundCreator = fund?.createdBy === userId;
   const currentBalance = summary?.totalBalance || 0;
+  console.log("Fund details:", fund);
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -471,7 +472,12 @@ export default function Transactions({ fundId, summary, fund, userId }) {
             {shareError}
           </motion.div>
         )}
-
+      {fund?.isPrivate && !isFundCreator ? (
+          <div className="bg-white rounded-lg shadow-sm p-6 text-center text-gray-600">
+            This fund is private. You can't view details.
+          </div>
+        ) : (
+        <>
         {/* Top Contributors */}
         <TopContributors contributor={summary.topContributor || {}} />
         <ContributorsCount contributors={summary.contributorCount || 0} />
@@ -539,6 +545,8 @@ export default function Transactions({ fundId, summary, fund, userId }) {
             </div>
           )}
         </div>
+        </>
+        )}
 
         {/* Amount Modal */}
         <AmountModal

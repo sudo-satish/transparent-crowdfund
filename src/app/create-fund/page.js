@@ -13,6 +13,7 @@ export default function CreateFund() {
     const { setIsLoading: setGlobalLoading } = useLoading();
     const [isLoading, setIsLoading] = useState(false);
     const [customerDecidesAmount, setCustomerDecidesAmount] = useState(false);
+    const [isPrivate, setIsPrivate] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -25,6 +26,7 @@ export default function CreateFund() {
             goal: formData.get('goal') ? parseFloat(formData.get('goal')) : null,
             contributionAmount: customerDecidesAmount ? null : (formData.get('contributionAmount') ? parseFloat(formData.get('contributionAmount')) : null),
             customerDecidesAmount: customerDecidesAmount,
+            isPrivate: isPrivate,
             createdBy: user.id,
         };
 
@@ -90,7 +92,21 @@ export default function CreateFund() {
                             <div className="flex items-center">
                                 <input
                                     type="checkbox"
+                                    id="isPrivate"
+                                    name='isPrivate'
+                                    checked={isPrivate}
+                                    onChange={(e) => setIsPrivate(e.target.checked)}
+                                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                                />
+                                <label htmlFor="customerDecidesAmount" className="ml-2 block text-sm text-gray-700">
+                                    This fund is Private (only admin can view details)
+                                </label>
+                            </div>
+                            <div className="flex items-center">
+                                <input
+                                    type="checkbox"
                                     id="customerDecidesAmount"
+                                    name='customerDecidesAmount'
                                     checked={customerDecidesAmount}
                                     onChange={(e) => setCustomerDecidesAmount(e.target.checked)}
                                     className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"

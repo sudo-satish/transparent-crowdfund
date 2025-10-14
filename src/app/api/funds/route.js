@@ -72,7 +72,7 @@ export async function POST(request) {
         }
 
         const body = await request.json();
-        const { title, description, goal, createdBy, contributionAmount, customerDecidesAmount } = body;
+        const { title, description, goal, createdBy, contributionAmount, customerDecidesAmount,isPrivate } = body;
 
         // Validate required fields
         if (!title || !createdBy) {
@@ -98,6 +98,7 @@ export async function POST(request) {
             createdBy,
             contributionAmount,
             customerDecidesAmount,
+            isPrivate,
         });
 
         const summary = await Summary.create({

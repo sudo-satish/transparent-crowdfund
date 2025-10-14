@@ -44,6 +44,10 @@ const fundSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    isPrivate: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 // Update the updatedAt timestamp before saving

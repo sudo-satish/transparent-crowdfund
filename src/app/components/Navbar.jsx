@@ -2,6 +2,7 @@
 
 import { SignInButton, SignUpButton, UserButton, useUser, SignOutButton } from "@clerk/nextjs";
 import Link from "next/link";
+import { LoadingLink } from "../components/LoadingLink";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
@@ -46,7 +47,7 @@ export default function Navbar() {
               </>
             )}
             {showDashboardButton && (
-              <Link href="/dashboard" className="inline-flex items-center">
+              <LoadingLink href="/dashboard" className="inline-flex items-center">
                 <Button size="sm" className="text-sm flex items-center gap-2">
                   {/* simple dashboard icon */}
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -57,7 +58,7 @@ export default function Navbar() {
                   </svg>
                   Dashboard
                 </Button>
-              </Link>
+              </LoadingLink>
             )}
           </div>
         </div>
