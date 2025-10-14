@@ -21,7 +21,6 @@ export default function DashboardUI() {
             try {
                 const response = await fetch("/api/funds");
                 const data = await response.json();
-                console.log(data);
                 setFunds(data);
             } catch (error) {
                 console.error("Error fetching funds:", error);
@@ -74,7 +73,7 @@ export default function DashboardUI() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white p-8">
+        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-24 p-8">
             <div className="max-w-7xl mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: -20 }}

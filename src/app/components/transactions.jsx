@@ -222,7 +222,7 @@ export default function Transactions({ fundId, summary, fund, userId }) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-gray-50 pt-24 p-8">
       <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -359,6 +359,28 @@ export default function Transactions({ fundId, summary, fund, userId }) {
               {isCreatingPaymentLink ? "Creating..." : "Make Payment"}
             </span>
           </motion.button>
+          <motion.button
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{
+                  delay: 0.9,
+                  duration: 0.3,
+                }}
+                whileHover={{
+                  scale: 1.03,
+                  boxShadow: "0 0 20px rgba(59, 130, 246, 0.3)",
+                  backgroundColor: "rgb(37 99 235)",
+                }}
+                whileTap={{
+                  scale: 0.97,
+                  transition: { duration: 0.1 },
+                }}
+                onClick={handleShare}
+                className="px-3 py-1.5 bg-blue-500 text-white rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1.5"
+              >
+                <FaShareAlt size={14} />
+                Share Page and start collecting funds
+              </motion.button>
 
           {/* Redeem Button - Only show for fund creator */}
           {isFundCreator && currentBalance > 0 && (
@@ -435,31 +457,9 @@ export default function Transactions({ fundId, summary, fund, userId }) {
               >
                 Export to CSV
               </motion.button>
-
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{
-                  delay: 0.9,
-                  duration: 0.3,
-                }}
-                whileHover={{
-                  scale: 1.03,
-                  boxShadow: "0 0 20px rgba(59, 130, 246, 0.3)",
-                  backgroundColor: "rgb(37 99 235)",
-                }}
-                whileTap={{
-                  scale: 0.97,
-                  transition: { duration: 0.1 },
-                }}
-                onClick={handleShare}
-                className="px-3 py-1.5 bg-blue-500 text-white rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1.5"
-              >
-                <FaShareAlt size={14} />
-                Share Page and start collecting funds
-              </motion.button>
             </>
           )}
+          
         </div>
 
         {shareError && (

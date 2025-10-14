@@ -1,0 +1,67 @@
+"use client";
+
+import { SignInButton, SignUpButton, UserButton, useUser, SignOutButton } from "@clerk/nextjs";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Button } from "@/components/ui/button";
+
+export default function Navbar() {
+  const { user, isSignedIn } = useUser();
+  const pathname = usePathname();
+  const showDashboardButton = pathname !== "/dashboard";
+
+
+  return (
+    <nav className="fixed w-full bg-white/80 backdrop-blur-md z-50 border-b">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex items-center">
+            <Link href="/" className="text-2xl font-bold text-indigo-600">
+              GroupFund
+            </Link>
+          </div>
+          <div className="flex items-center gap-4">
+            {!isSignedIn ? (
+              <>
+                <SignInButton mode="modal">
+                  <Button variant="outline" size="sm" className="text-sm border-indigo-600 text-indigo-600 hover:bg-indigo-50">
+                    Sign In
+                  </Button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <Button size="sm" className="text-sm">Get Started</Button>
+                </SignUpButton>
+              </>
+            ) : (
+              <>
+                <span className="text-sm text-gray-600">
+                  Welcome, {user?.firstName || user?.username || 'User'}
+                </span>
+                <UserButton afterSignOutUrl="/" />
+                <SignOutButton>
+                  <Button variant="outline" size="sm" className="text-sm">
+                    Logout
+                  </Button>
+                </SignOutButton>
+              </>
+            )}
+            {showDashboardButton && (
+              <Link href="/dashboard" className="inline-flex items-center">
+                <Button size="sm" className="text-sm flex items-center gap-2">
+                  {/* simple dashboard icon */}
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="3" width="7" height="9" rx="1" />
+                    <rect x="14" y="3" width="7" height="5" rx="1" />
+                    <rect x="14" y="12" width="7" height="9" rx="1" />
+                    <rect x="3" y="14" width="7" height="7" rx="1" />
+                  </svg>
+                  Dashboard
+                </Button>
+              </Link>
+            )}
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+}

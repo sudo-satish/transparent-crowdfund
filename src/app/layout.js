@@ -4,6 +4,7 @@ import "./globals.css";
 import FeedbackButton from "./components/FeedbackButton";
 import { Toaster } from "react-hot-toast";
 import { LoadingProvider } from "./components/LoadingProvider";
+import Navbar from "./components/Navbar";
 import { db } from "@/services/db";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -20,6 +21,7 @@ export default async function RootLayout({ children }) {
       <html lang="en">
         <body className={inter.className}>
           <LoadingProvider>
+            <Navbar />
             {children}
             <FeedbackButton />
             <Toaster />

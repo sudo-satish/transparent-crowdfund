@@ -5,24 +5,6 @@ import { escapeHtml } from "@/utils/helper";
 export default function PrivacyPage() {
     return (
         <div className="min-h-screen bg-gradient-to-b from-white to-gray-100">
-            {/* Navigation */}
-            <nav className="fixed w-full bg-white/80 backdrop-blur-md z-50 border-b">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center h-16">
-                        <div className="flex items-center">
-                            <Link href="/" className="text-2xl font-bold text-indigo-600">
-                                GroupFund
-                            </Link>
-                        </div>
-                        <div className="flex items-center gap-4">
-                            <Link href="/">
-                                <Button variant="ghost" size="sm" className="text-sm">Home</Button>
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            </nav>
-
             {/* Privacy Section */}
             <section className="pt-32 pb-20 px-4">
                 <div className="max-w-4xl mx-auto">

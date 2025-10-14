@@ -1,48 +1,11 @@
-import { SignInButton, SignUpButton, UserButton, auth } from "@clerk/nextjs";
+import { SignUpButton } from "@clerk/nextjs";
 import Link from "next/link";
-import { LoadingLink } from "./components/LoadingLink";
 import { Button } from "@/components/ui/button";
 
-export default async function Home() {
-  const { userId } = auth();
+export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-100">
-      {/* Navigation */}
-      <nav className="fixed w-full bg-white/80 backdrop-blur-md z-50 border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <Link href="/" className="text-2xl font-bold text-indigo-600">
-                GroupFund
-              </Link>
-            </div>
-            <div className="flex items-center gap-4">
-              {!userId ? (
-                <>
-                  <SignInButton mode="modal">
-                    <Button variant="outline" size="sm" className="text-sm border-indigo-600 text-indigo-600 hover:bg-indigo-50">
-                      Sign In
-                    </Button>
-                  </SignInButton>
-                  <SignUpButton mode="modal">
-                    <Button size="sm" className="text-sm">Get Started</Button>
-                  </SignUpButton>
-                </>
-              ) : (
-                <>
-                  <LoadingLink href="/dashboard">
-                    <Button variant="ghost" className="text-indigo-600 hover:text-indigo-700 hover:bg-indigo-50 font-semibold">
-                      Dashboard
-                    </Button>
-                  </LoadingLink>
-                  <UserButton afterSignOutUrl="/" />
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      </nav>
 
       {/* Hero Section */}
       <section className="pt-32 pb-20 px-4 bg-gradient-to-b from-indigo-50 to-white">
@@ -60,19 +23,11 @@ export default async function Home() {
               Whether it&apos;s a group trip, team event, or community project, GroupFund makes it easy to collect and track contributions from everyone involved.
             </p>
             <div className="flex justify-center gap-4">
-              {!userId ? (
-                <SignUpButton mode="modal">
-                  <Button size="lg" className="text-base md:text-lg px-6 md:px-8 bg-indigo-600 hover:bg-indigo-700">
-                    Start Collecting
-                  </Button>
-                </SignUpButton>
-              ) : (
-                <LoadingLink href="/create-fund">
-                  <Button size="lg" className="text-base md:text-lg px-6 md:px-8 bg-indigo-600 hover:bg-indigo-700">
-                    Create Fund
-                  </Button>
-                </LoadingLink>
-              )}
+              <SignUpButton mode="modal">
+                <Button size="lg" className="text-base md:text-lg px-6 md:px-8 bg-indigo-600 hover:bg-indigo-700">
+                  Start Collecting
+                </Button>
+              </SignUpButton>
             </div>
           </div>
         </div>
@@ -109,11 +64,11 @@ export default async function Home() {
                 </p>
                 {index === 0 && (
                   <div className="mt-6">
-                    <LoadingLink href="/create-fund">
+                    <SignUpButton mode="modal">
                       <Button className="w-full bg-indigo-600 hover:bg-indigo-700">
                         Create Fund Now
                       </Button>
-                    </LoadingLink>
+                    </SignUpButton>
                   </div>
                 )}
               </div>
@@ -170,19 +125,11 @@ export default async function Home() {
           <p className="text-xl mb-8 max-w-3xl mx-auto">
             Join thousands of groups who trust GroupFund for transparent and hassle-free fund collection.
           </p>
-          {!userId ? (
-            <SignUpButton mode="modal">
-              <Button size="lg" variant="secondary" className="text-lg px-8">
-                Get Started Now
-              </Button>
-            </SignUpButton>
-          ) : (
-            <LoadingLink href="/create-fund">
-              <Button size="lg" variant="secondary" className="text-lg px-8">
-                Create Fund
-              </Button>
-            </LoadingLink>
-          )}
+          <SignUpButton mode="modal">
+            <Button size="lg" variant="secondary" className="text-lg px-8">
+              Get Started Now
+            </Button>
+          </SignUpButton>
         </div>
       </section>
 

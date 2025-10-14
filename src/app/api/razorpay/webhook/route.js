@@ -20,7 +20,6 @@ import mongoose from 'mongoose';
 export async function POST(request) {
     console.log('Webhook received');
     const body = await request.json();
-    console.log(body);
     const headersList = await headers();
     const signature = headersList.get('x-razorpay-signature');
 

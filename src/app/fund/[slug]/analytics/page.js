@@ -13,11 +13,7 @@ export default async function AnalyticsPage({ params }) {
         fund: fund._id
     }).lean();
 
-    console.log({
-        fund,
-        transactions,
-        summary
-    })
+    
 
     return (
         <Analytics

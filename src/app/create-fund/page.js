@@ -53,7 +53,7 @@ export default function CreateFund() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-50 p-8">
+        <div className="min-h-screen bg-gray-50 pt-24 p-8">
             <div className="max-w-2xl mx-auto">
                 <div className="bg-white rounded-lg shadow-sm p-6 md:p-8">
                     <h1 className="text-2xl font-bold text-gray-800 mb-6">Create New Fund</h1>
