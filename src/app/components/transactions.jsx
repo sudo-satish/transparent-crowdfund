@@ -23,7 +23,7 @@ import ContributorsCount from "./ContributorsCount";
 import AmountModal from "./AmountModal";
 import NameModal from "./NameModal";
 import RedeemModal from "./RedeemModal";
-
+import { useQRCode } from 'next-qrcode';
 export default function Transactions({ fundId, summary, fund, userId }) {
   const [isLoading, setIsLoading] = useState(true);
   const [transactions, setTransactions] = useState([]);
@@ -33,6 +33,11 @@ export default function Transactions({ fundId, summary, fund, userId }) {
   const [isRedeemModalOpen, setIsRedeemModalOpen] = useState(false);
   const [isCreatingPaymentLink, setIsCreatingPaymentLink] = useState(false);
   const [isRedeeming, setIsRedeeming] = useState(false);
+  const [showQRCode, setShowQRCode] = useState(false);
+
+  const paymentPageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/fund/${fund?.slug}/make-payment`;
+  const { Image } = useQRCode()
+
 
   const router = useRouter();
   const { setIsLoading: setGlobalLoading } = useLoading();
@@ -40,7 +45,6 @@ export default function Transactions({ fundId, summary, fund, userId }) {
   // Check if current user is the fund creator
   const isFundCreator = fund?.createdBy === userId;
   const currentBalance = summary?.totalBalance || 0;
-  console.log("Fund details:", fund);
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -59,19 +63,6 @@ export default function Transactions({ fundId, summary, fund, userId }) {
       setIsLoading(false);
     });
   }, [fundId]);
-
-  // if (isLoading) {
-  //   return (
-  //     <div className='min-h-screen bg-gray-50 p-8'>
-  //       <div className='max-w-4xl mx-auto'>
-  //         <div className='flex justify-center items-center h-screen'>
-  //           <div className='animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto'></div>
-  //           <p className='mt-4 text-gray-600'>Loading transactions...</p>
-  //         </div>
-  //       </div>
-  //     </div>
-  //   );
-  // }
 
   const exportToCSV = () => {
     // Prepare CSV content
@@ -462,6 +453,40 @@ export default function Transactions({ fundId, summary, fund, userId }) {
           )}
           
         </div>
+        {/* show QR code buttonn */}
+        <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.95, duration: 0.3 }}
+            whileHover={{ scale: 1.03, boxShadow: "0 0 18px rgba(107, 114, 128, 0.2)" }}
+            whileTap={{ scale: 0.97, transition: { duration: 0.1 } }}
+            onClick={() => setShowQRCode((s) => !s)}
+            className="px-3 py-1.5 mb-3 bg-gray-700 text-white rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1.5"
+          >
+            {showQRCode ? "Hide QR" : "Show QR"}
+        </motion.button>
+        {showQRCode && (
+          <div className="my-4 flex items-center justify-center">
+            <div className="bg-white p-4 rounded-lg shadow-md text-center flex flex-col items-center">
+              <Image
+                text={paymentPageUrl}
+                options={{
+                  type: 'image/jpeg',
+                  quality: 0.3,
+                  errorCorrectionLevel: 'M',
+                  margin: 3,
+                  scale: 4,
+                  width: 200,
+                  color: {
+                    dark: '#010599FF',
+                    light: '#FFE6C2FF',
+                  },
+                }}
+              />
+              <p className="text-sm text-gray-600 mt-2 break-words max-w-xs">{paymentPageUrl}</p>
+            </div>
+          </div>
+        )}
 
         {shareError && (
           <motion.div
