@@ -9,6 +9,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useLoading } from "./LoadingProvider";
 import { FaRupeeSign } from "react-icons/fa";
+import { IoArrowBack } from "react-icons/io5";
 import { config } from "@/config";
 import {
   FaHandHoldingHeart,
@@ -222,16 +223,31 @@ export default function Transactions({ fundId, summary, fund, userId }) {
           transition={{ duration: 0.5 }}
           className="mb-8"
         >
-          <div className="flex items-center gap-3 mb-2">
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.2, type: "spring" }}
-            >
-              <FaHandHoldingHeart className="text-4xl text-green-600" />
-            </motion.div>
-            <h1 className="text-3xl font-bold text-gray-800">Fund Details</h1>
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => router.push('/dashboard')}
+                aria-label="Back to dashboard"
+                className="p-2 rounded-md hover:bg-gray-100 transition"
+              >
+                <IoArrowBack className="text-2xl text-gray-700" />
+              </button>
+
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.2, type: "spring" }}
+              >
+                <FaHandHoldingHeart className="text-4xl text-green-600" />
+              </motion.div>
+
+              <h1 className="text-3xl font-bold text-gray-800">Fund Details</h1>
+            </div>
+
+            {/* optional: small link or action area on the right if needed in future */}
+            <div />
           </div>
+
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}

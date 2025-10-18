@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 export default function Navbar() {
   const { user, isSignedIn } = useUser();
   const pathname = usePathname();
-  const showDashboardButton = pathname !== "/dashboard";
+  const showDashboardButton = pathname !== "/dashboard" && pathname !== "/";
 
 
   return (
