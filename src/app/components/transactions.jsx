@@ -498,7 +498,7 @@ All updates will be shared on this page.`;
           <div className="my-4 flex items-center justify-center">
             <div className="bg-white p-4 rounded-lg shadow-md text-center flex flex-col items-center">
               <img src={fund.qrCode} alt="Scan to pay via UPI" className="font-black"/>
-              <p className="text-sm text-gray-00 mt-2 break-words max-w-xs font-bold">
+              <p className="text-lg text-gray-900 mt-2 break-words max-w-xs font-bold">
                 {fund.title} 
               </p>
             </div>
