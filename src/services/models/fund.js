@@ -48,6 +48,15 @@ const fundSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    qrID:{
+        type:String,
+        required:true,
+        unique:true,
+    },
+    qrCode:{
+        type:String,
+        unique:true,
+    },
 });
 
 // Update the updatedAt timestamp before saving

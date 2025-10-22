@@ -3,6 +3,7 @@ import { Fund } from "@/services/models/fund";
 import { Summary } from "@/services/models/summary";
 import { Transaction } from "@/services/models/transactions";
 import { auth } from "@clerk/nextjs";
+import Razorpay from "razorpay";
 
 export async function GET(req, { params }) {
     const { id } = await params;
@@ -34,6 +35,12 @@ export async function DELETE(req, { params }) {
         // Delete related data first
         await Summary.deleteMany({ fund: id });
         await Transaction.deleteMany({ fund: id });
+
+        // close the qr from razorpay
+        var instance=new Razorpay({key_id:process.env.RAZORPAY_KEY_ID,
+            key_secret:process.env.RAZORPAY_KEY_SECRET,
+        })
+        instance.qrCode.close(fund.qrID);
 
         // Delete the fund
         await Fund.findByIdAndDelete(id);
