@@ -122,11 +122,13 @@ export default function Transactions({ fundId, summary, fund, userId }) {
 
   // handle whatsApp Share
   const handleWhatsAppShare=async()=>{
+    const qr=fund.qrCode;
 const description=fund.description||"Help us to reach our goal";
     const message = `Hey! 
 We're raising funds for \" ${fund.title}\ "  –  ${description}.  
 Every small contribution counts 
  
+or you can scan this qr ${qr}
 You can view details and contribute here: 
 ${window.location.href} 
 
@@ -495,23 +497,9 @@ All updates will be shared on this page.`;
         {showQRCode && (
           <div className="my-4 flex items-center justify-center">
             <div className="bg-white p-4 rounded-lg shadow-md text-center flex flex-col items-center">
-              <Image
-                text={paymentPageUrl}
-                options={{
-                  type: "image/jpeg",
-                  quality: 0.3,
-                  errorCorrectionLevel: "M",
-                  margin: 3,
-                  scale: 4,
-                  width: 200,
-                  color: {
-                    dark: "#010599FF",
-                    light: "#FFE6C2FF",
-                  },
-                }}
-              />
-              <p className="text-sm text-gray-600 mt-2 break-words max-w-xs">
-                {paymentPageUrl}
+              <img src={fund.qrCode} alt="Scan to pay via UPI" className="font-black"/>
+              <p className="text-sm text-gray-00 mt-2 break-words max-w-xs font-bold">
+                {fund.title} 
               </p>
             </div>
           </div>

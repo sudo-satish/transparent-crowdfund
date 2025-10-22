@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { unique } from "next/dist/build/utils";
 
 const fundSchema = new mongoose.Schema({
     title: {
@@ -47,6 +48,15 @@ const fundSchema = new mongoose.Schema({
     isPrivate: {
         type: Boolean,
         default: false,
+    },
+    qrID:{
+        type:String,
+        required:true,
+        unique:true,
+    },
+    qrCode:{
+        type:String,
+        unique:true,
     },
 });
 

@@ -90,17 +90,45 @@ export async function POST(request) {
 
         const slug = await createSlug(sanitizedTitle);
 
+        const amountInPaise=customerDecidesAmount?null:contributionAmount*100;
+       
+         const payload = {
+           type: "upi_qr",
+           name: sanitizedTitle,
+           usage: "multiple_use",   // multiuse-qr for a fund
+           fixed_amount:!customerDecidesAmount,
+           ...((!customerDecidesAmount)&&{"payment_amount": amountInPaise,}),
+           description: sanitizedDescription,
+        };
+    
+        const response=await fetch("https://api.razorpay.com/v1/payments/qr_codes", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization:
+              "Basic " +
+              Buffer.from(
+                `${process.env.RAZORPAY_KEY_ID}:${process.env.RAZORPAY_KEY_SECRET}`
+              ).toString("base64"),
+           },
+           body: JSON.stringify(payload),
+         });
+         console.log(response.name);
+         
+        const data= await response.json();
+         console.log("qr code response : ",data); 
         const fund = await Fund.create({
-            title: sanitizedTitle,
-            description: sanitizedDescription,
-            goal,
-            slug,
-            createdBy,
-            contributionAmount,
-            customerDecidesAmount,
-            isPrivate,
-        });
-
+           title: sanitizedTitle,
+           description: sanitizedDescription,
+           goal,
+           slug,
+           createdBy,
+           contributionAmount,
+           customerDecidesAmount,
+           isPrivate,
+           qrID:data.id,
+           qrCode: data.image_url,
+         });
         const summary = await Summary.create({
             fund: fund._id,
         });
