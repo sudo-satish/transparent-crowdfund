@@ -92,13 +92,16 @@ export async function POST(request) {
 
         const amountInPaise=customerDecidesAmount?null:contributionAmount*100;
        
-         const payload = {
+        const payload = {
            type: "upi_qr",
-           name: sanitizedTitle,
+           name: slug,
            usage: "multiple_use",   // multiuse-qr for a fund
            fixed_amount:!customerDecidesAmount,
            ...((!customerDecidesAmount)&&{"payment_amount": amountInPaise,}),
-           description: sanitizedDescription,
+           description: sanitizedTitle,
+           notes:{
+            slug:slug
+           }
         };
     
         const response=await fetch("https://api.razorpay.com/v1/payments/qr_codes", {

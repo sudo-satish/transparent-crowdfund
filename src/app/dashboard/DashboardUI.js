@@ -173,26 +173,23 @@ export default function DashboardUI() {
                                             </p>
                                         )}
 
-                                        <div className="space-y-4">
+                                        <div className="space-y-4 ml-2">
+                                            <div className="flex justify-between items-center">
+                                                <span className="text-sm text-gray-500">Goal</span>
+                                                <span className="font-medium text-gray-800 flex items-center">
+                                                    <FaRupeeSign className="text-xs mr-1" />
+                                                    {fund.goal ? fund.goal.toFixed(2).toLocaleString() : 'N/A'}
+                                                </span>
+                                            </div>
+                                            <div className="flex justify-between items-center">
+                                                <span className="text-sm text-gray-500">Raised</span>
+                                                <span className="font-medium text-gray-800 flex items-center">
+                                                    <FaRupeeSign className="text-xs mr-1" />
+                                                    {fund.currentAmount.toFixed(2).toLocaleString()}
+                                                </span>
+                                            </div>
                                             {
                                                 fund.goal && (
-                                                    <>
-                                                        <div className="flex justify-between items-center">
-                                                            <span className="text-sm text-gray-500">Goal</span>
-                                                            <span className="font-medium text-gray-800 flex items-center">
-                                                                <FaRupeeSign className="text-xs mr-1" />
-                                                                {fund.goal.toLocaleString()}
-                                                            </span>
-                                                        </div>
-
-                                                        <div className="flex justify-between items-center">
-                                                            <span className="text-sm text-gray-500">Raised</span>
-                                                            <span className="font-medium text-gray-800 flex items-center">
-                                                                <FaRupeeSign className="text-xs mr-1" />
-                                                                {fund.currentAmount.toFixed(2).toLocaleString()}
-                                                            </span>
-                                                        </div>
-
                                                         <div className="relative pt-1">
                                                             <div className="flex mb-2 items-center justify-between">
                                                                 <div>
@@ -210,12 +207,12 @@ export default function DashboardUI() {
                                                                 />
                                                             </div>
                                                         </div>
-                                                    </>)
+                                                    )
                                             }
+                                        </div>
 
-                                            <div className="text-xs text-gray-500 mt-2">
-                                                Created {new Date(fund.createdAt).toLocaleDateString()}
-                                            </div>
+                                        <div className="text-xs text-gray-500 mt-6">
+                                            Created {new Date(fund.createdAt).toLocaleDateString()}
                                         </div>
                                     </div>
                                 </div>

@@ -16,6 +16,7 @@ import {
   FaUsers,
   FaShareAlt,
   FaMoneyBillWave,
+  FaWhatsapp,
 } from "react-icons/fa";
 import { MdLocationOn } from "react-icons/md";
 import TopContributors from "./TopContributors";
@@ -495,6 +496,25 @@ All updates will be shared on this page.`;
             </>
           )}
         </div>
+
+...      <div className="flex flex-col sm:flex-row gap-3 mb-6">
+        {/* WhatsApp share button */}
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.1, duration: 0.3 }}
+          whileHover={{
+            scale: 1.03,
+            boxShadow: "0 0 18px rgba(37, 211, 102, 0.2)",
+          }}
+          whileTap={{ scale: 0.97, transition: { duration: 0.1 } }}
+          onClick={() =>handleWhatsAppShare()}
+          className="px-3 py-1.5 mb-3 bg-green-500 text-white rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1.5"
+        >
+          <FaWhatsapp size={18}/>
+          Share on WhatsApp
+        </motion.button>
+
         {/* show QR code buttonn */}
         <motion.button
           initial={{ opacity: 0 }}
@@ -510,40 +530,20 @@ All updates will be shared on this page.`;
         >
           {showQRCode ? "Hide QR" : "Show QR"}
         </motion.button>
+        
+        </div>
         {showQRCode && (
           <div className="my-4 flex items-center justify-center">
-            <div className="bg-white p-4 rounded-lg shadow-md text-center flex flex-col items-center">
-              <img src={fund.qrCode} alt="Scan to pay via UPI" className="font-black"/>
-              <p className="text-lg text-gray-900 mt-2 break-words max-w-xs font-bold">
-                {fund.title} 
-              </p>
+            <div className="bg-white p-2 rounded-lg shadow-md text-center flex flex-col items-center">
+              <img src={fund.qrCode} alt="Scan to pay via UPI" className="font-black" />
+              {/* <p className="text-lg text-gray-900 mt-2 break-words max-w-xs font-bold">
+                
+              </p> */}
             </div>
           </div>
         )}
 
-        {/* WhatsApp share button */}
-        <motion.button
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.1, duration: 0.3 }}
-          whileHover={{
-            scale: 1.03,
-            boxShadow: "0 0 18px rgba(37, 211, 102, 0.2)",
-          }}
-          whileTap={{ scale: 0.97, transition: { duration: 0.1 } }}
-          onClick={() =>handleWhatsAppShare()}
-          className="px-3 py-1.5 mb-3 bg-green-500 text-white rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1.5"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-            className="w-5 h-5"
-          >
-            <path d="M20.52 3.48A11.94 11.94 0 0012.01 0C5.37 0 .01 5.37.01 12c0 2.11.55 4.17 1.6 5.98L0 24l6.19-1.6a11.9 11.9 0 005.81 1.49h.01c6.63 0 12-5.37 12-12 0-3.19-1.24-6.19-3.48-8.41zM12 21.44c-1.84 0-3.63-.49-5.2-1.43l-.37-.22-3.68.95.98-3.59-.24-.37A9.43 9.43 0 012.56 12C2.56 6.7 6.7 2.56 12 2.56c2.52 0 4.88.98 6.66 2.76A9.36 9.36 0 0121.44 12c0 5.3-4.14 9.44-9.44 9.44zm5.37-7.07c-.29-.14-1.7-.84-1.96-.93-.26-.1-.45-.14-.64.14-.19.29-.74.93-.91 1.12-.17.19-.34.21-.63.07-.29-.14-1.21-.45-2.3-1.43-.85-.75-1.43-1.67-1.6-1.95-.17-.29-.02-.45.13-.6.13-.13.29-.34.43-.51.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.14-.64-1.55-.88-2.12-.23-.55-.47-.48-.64-.48h-.55c-.19 0-.5.07-.76.36s-1 1-1 2.43 1.03 2.82 1.17 3.02c.14.19 2.03 3.09 4.92 4.33.69.3 1.23.48 1.65.61.69.22 1.32.19 1.81.12.55-.08 1.7-.7 1.94-1.37.24-.67.24-1.24.17-1.37-.07-.12-.26-.19-.55-.33z" />
-          </svg>
-          Share on WhatsApp
-        </motion.button>
+        
 
         {shareError && (
           <motion.div

@@ -40,12 +40,33 @@ export async function POST(request) {
         return new Response('Webhook received', { status: 200 });
     }
 
-    // Extract fund_id from payment notes
+    // Extract fund_id and slug safely
     const fundIdStr = body?.payload?.payment?.entity?.notes?.fund_id;
-    if (!fundIdStr) return new Response('No fund_id found', { status: 400 });
-    const fundId = new mongoose.Types.ObjectId(fundIdStr);
+    // const slug = body?.payload?.payment?.entity?.notes?.slug;
+    const slug = body?.qr_code?.entity?.notes?.slug;
 
-    const isCredit = body.event === 'payment.captured';
+    if (!fundIdStr && !slug) {
+      return new Response('No fund_id or slug found', { status: 400 });
+    }
+
+    let fundId;
+
+    if (fundIdStr) {
+      if (!mongoose.isValidObjectId(fundIdStr)) {
+        return new Response('Invalid fund_id format', { status: 400 });
+      }
+      fundId = new mongoose.Types.ObjectId(fundIdStr);
+    } else {
+      const fund = await Fund.findOne({ slug }).select('_id');
+      if (!fund) {
+        return new Response('Fund not found for given slug', { status: 404 });
+      }
+      fundId = fund._id;
+    }
+
+
+
+    const isCredit = body.event === 'payment.captured' || body.event === 'qr_code.credited';
     const amountInPaise = body.payload.payment.entity.amount;
     const amount = (amountInPaise / 100);
 
@@ -80,7 +101,7 @@ export async function POST(request) {
         amount: amount, 
         date: new Date(body.payload.payment.entity.created_at * 1000),
         type: body.payload.payment.entity.event,
-        transactionType: body.event === 'payment.captured' ? 'credit' : 'debit',
+        transactionType: isCredit  ? 'credit' : 'debit',
         transactionId: body.payload.payment.entity.id,
         description: body.payload.payment.entity.description,
         email: body.payload.payment.entity.email,
