@@ -8,7 +8,7 @@ import {
 } from "@/utils/helper";
 import { useRouter } from "next/navigation";
 import { useLoading } from "./LoadingProvider";
-import { FaRupeeSign, FaShare } from "react-icons/fa";
+import { FaDownload, FaRupeeSign, FaShare } from "react-icons/fa";
 import { IoArrowBack } from "react-icons/io5";
 import { config } from "@/config";
 import {
@@ -482,105 +482,7 @@ All updates will be shared on this page.`;
                 </motion.button>
               </>
             )}
-            <>
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.1, duration: 0.3 }}
-                whileHover={{
-                  scale: 1.03,
-                  boxShadow: "0 0 18px rgba(37, 211, 102, 0.2)",
-                }}
-                whileTap={{ scale: 0.97, transition: { duration: 0.1 } }}
-                onClick={() => setShare((prev) => !prev)}
-                className="px-3 py-1.5 bg-blue-500 text-white rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1.5 h-fit"
-              >
-                <FaShare size={18} />
-                Share
-              </motion.button>
-              {/* Animated Buttons */}
-              <AnimatePresence>
-                {share && (
-                  <>
-                    {/* Background overlay */}
-                    <motion.div
-                      className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      onClick={() => setShare(false)} // close when clicked outside
-                    />
-
-                    {/* Popup content */}
-                    <motion.div
-                      className="fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-                         bg-white/10 backdrop-blur-xl border border-white/20 
-                         p-6 rounded-2xl shadow-xl flex flex-col items-center gap-4 w-96 mx-1"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <h2 className="text-white text-lg font-semibold mb-2">
-                        Share This Page
-                      </h2>
-
-                      <div className="flex gap-3 w-96 mx-2.5">
-                        {/* WhatsApp */}
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{
-                            scale: 0.97,
-                            transition: { duration: 0.1 },
-                          }}
-                          onClick={() => handleWhatsAppShare()}
-                          className="px-3 py-1.5 mb-3 bg-green-500 text-white rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1.5"
-                        >
-                          <FaWhatsapp size={18} />
-                          Share on WhatsApp
-                        </motion.button>
-
-                        {/* share with more options */}
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{
-                            scale: 0.97,
-                            transition: { duration: 0.1 },
-                          }}
-                          onClick={handleShare}
-                          className="px-3 py-1.5 bg-blue-500 text-white rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1.5"
-                        >
-                          <FaShareAlt size={14} />
-                          Share Page and start collecting funds
-                        </motion.button>
-
-                        {/* Copy Link */}
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{
-                            scale: 0.97,
-                            transition: { duration: 0.1 },
-                          }}
-                          onClick={handleDownload}
-                          className="px-3 py-1.5 mb-3 bg-gray-700 text-white rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1.5"
-                        >
-                          download QR
-                        </motion.button>
-                      </div>
-
-                      {/* Close Button */}
-                      <motion.button
-                        whileHover={{ scale: 1.1 }}
-                        onClick={() => setShare(false)}
-                        className="mt-3 text-white/80 hover:text-white text-sm"
-                      >
-                        Close
-                      </motion.button>
-                    </motion.div>
-                  </>
-                )}
-              </AnimatePresence>
-            </>
+              {/* share modal and overlay remain but trigger moved to floating button below */}
           </div>
 
           {shareError && (
@@ -695,6 +597,82 @@ All updates will be shared on this page.`;
             isLoading={isRedeeming}
             currentBalance={currentBalance}
           />
+
+          {/* Floating Share Button (fixed above feedback button) */}
+          <button
+            onClick={() => setShare((prev) => !prev)}
+            aria-label="Share this fund"
+            className="fixed right-6 bottom-22 bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-lg transition-all duration-200 ease-in-out hover:scale-105 z-50"
+          >
+            <FaShareAlt className="h-6 w-6" />
+          </button>
+
+          {/* Share Modal & Overlay */}
+          <AnimatePresence>
+            {share && (
+              <>
+                <motion.div
+                  className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setShare(false)}
+                />
+
+                <motion.div
+                  className="fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl p-6 shadow-xl w-full max-w-md"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <h3 className="text-lg font-semibold text-gray-800 mb-4">Share This Fund</h3>
+
+                  <div className="flex justify-around items-center gap-4">
+                    <div className="flex flex-col items-center gap-2">
+                      <motion.button
+                        whileHover={{ scale: 1.06 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={() => handleWhatsAppShare()}
+                        className="w-14 h-14 rounded-full bg-green-500 text-white flex items-center justify-center shadow-md"
+                        aria-label="Share on WhatsApp"
+                      >
+                        <FaWhatsapp className="w-6 h-6" />
+                      </motion.button>
+                      <span className="text-xs text-gray-700">WhatsApp</span>
+                    </div>
+
+                    <div className="flex flex-col items-center gap-2">
+                      <motion.button
+                        whileHover={{ scale: 1.06 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={handleShare}
+                        className="w-14 h-14 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-md"
+                        aria-label="Share link"
+                      >
+                        <FaLink className="w-6 h-6" />
+                      </motion.button>
+                      <span className="text-xs text-gray-700">Share Link</span>
+                    </div>
+
+                    <div className="flex flex-col items-center gap-2">
+                      <motion.button
+                        whileHover={{ scale: 1.06 }}
+                        whileTap={{ scale: 0.97 }}
+                        onClick={handleDownload}
+                        className="w-14 h-14 rounded-full bg-gray-700 text-white flex items-center justify-center shadow-md"
+                        aria-label="Download QR"
+                      >
+                        <FaDownload className="w-5 h-5" />
+                      </motion.button>
+                      <span className="text-xs text-gray-700">Download QR</span>
+                    </div>
+                  </div>
+
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </>

@@ -39,7 +39,7 @@ export default function Navbar() {
                   Welcome, {user?.firstName || user?.username || 'User'}
                 </span>
                 <UserButton afterSignOutUrl="/" />
-                <SignOutButton>
+                <SignOutButton afterSignOutUrl="/">
                   <Button variant="outline" size="sm" className="text-sm">
                     Logout
                   </Button>
