@@ -8,7 +8,7 @@ import {
 } from "@/utils/helper";
 import { useRouter } from "next/navigation";
 import { useLoading } from "./LoadingProvider";
-import { FaDownload, FaRupeeSign, FaShare } from "react-icons/fa";
+import { FaDownload, FaRupeeSign, FaShare, FaWallet, FaExclamationTriangle, FaChartBar, FaFileExport, FaClipboardList, FaLock, FaEdit, FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { IoArrowBack } from "react-icons/io5";
 import { config } from "@/config";
 import {
@@ -250,327 +250,334 @@ All updates will be shared on this page.`;
         <meta charSet="UTF-8" />
       </Head>
 
-      <div className="min-h-screen bg-gray-50 pt-24 p-8">
-        <div className="max-w-4xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="mb-8"
-          >
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => router.push("/dashboard")}
-                  aria-label="Back to dashboard"
-                  className="p-2 rounded-md hover:bg-gray-100 transition"
-                >
-                  <IoArrowBack className="text-2xl text-gray-700" />
-                </button>
+      <div className="relative flex h-auto min-h-screen w-full flex-col bg-white text-[#111718] font-display overflow-x-hidden">
+        <div className="layout-container flex h-full grow flex-col">
+          <div className="flex flex-1 justify-center">
+            <div className="layout-content-container flex flex-col max-w-[1200px] flex-1">
+              {/* Space for overlay navbar */}
+              <div className="h-20"></div>
 
+              {/* Hero Section with Fund Details */}
+              <div className="px-6 sm:px-10 mb-6">
                 <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.2, type: "spring" }}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="flex items-center gap-4 mb-4"
                 >
-                  <FaHandHoldingHeart className="text-4xl text-green-600" />
+                  <button
+                    onClick={() => router.push("/dashboard")}
+                    aria-label="Back to dashboard"
+                    className="p-2 rounded-lg hover:bg-gray-100 transition-all duration-200"
+                  >
+                    <IoArrowBack className="text-xl text-[#111718]" />
+                  </button>
+
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.2, type: "spring" }}
+                    className="text-2xl"
+                  >
+                    <FaHandHoldingHeart className='text-4xl text-[#0dccf2]' />
+                  </motion.div>
+
+                  <div>
+                    <h1 className="text-[#111718] text-2xl sm:text-3xl font-bold leading-tight">
+                      {escapeHtml(fund.title)}
+                    </h1>
+                    {fund.description && (
+                    <div className="flex items-start gap-3">
+                      {/* <FaUsers className="text-[#0dccf2] mt-0.5 text-lg" /> */}
+                      <p className="text-[#495057] text-base leading-relaxed">{escapeHtml(fund.description)}</p>
+                    </div>
+                    )}
+                  </div>
                 </motion.div>
 
-                <h1 className="text-3xl font-bold text-gray-800">
-                  Fund Details
-                </h1>
+                
               </div>
 
-              {/* optional: small link or action area on the right if needed in future */}
-              <div />
-            </div>
+              {/* Summary Cards */}
+              <div className="px-6 sm:px-10 mb-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-green-50 rounded-lg border border-green-200 p-4 hover:shadow-md transition-all duration-300"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <FaMoneyBillWave className="text-green-600 text-lg" />
+                      <h2 className="text-sm font-semibold text-[#111718]">
+                        Total Received
+                      </h2>
+                    </div>
+                    <p className="text-xl font-semibold text-green-600">
+                      {convertToIndianCurrency(summary.totalCredited || 0)}
+                    </p>
+                  </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 }}
-              className="flex items-center gap-2 ml-12"
-            >
-              <MdLocationOn className="text-xl text-gray-600" />
-              <h2 className="text-xl font-semibold text-gray-700">
-                {escapeHtml(fund.title)}
-              </h2>
-            </motion.div>
-          </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 }}
+                    className="bg-red-50 rounded-lg border border-red-200 p-4 hover:shadow-md transition-all duration-300"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <FaRupeeSign className="text-red-600 text-lg" />
+                      <h2 className="text-sm font-semibold text-[#111718]">
+                        Total Spent
+                      </h2>
+                    </div>
+                    <p className="text-xl font-semibold text-red-600">
+                      {convertToIndianCurrency(summary.totalDebited || 0)}
+                    </p>
+                  </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.4 }}
-            className="flex flex-col gap-2 mb-8"
-          >
-            {fund.description && (
-              <div className="flex items-start gap-3">
-                <FaUsers className="text-gray-400 mt-1" />
-                <p className="text-gray-600">{escapeHtml(fund.description)}</p>
-              </div>
-            )}
-          </motion.div>
-
-          {/* Summary Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-green-50 p-3 md:p-6 rounded-lg shadow-sm"
-            >
-              <h2 className="text-sm md:text-lg font-semibold text-green-800">
-                Total Received
-              </h2>
-              <p className="text-lg md:text-2xl font-bold text-green-600">
-                {convertToIndianCurrency(summary.totalCredited || 0)}
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              className="bg-red-50 p-3 md:p-6 rounded-lg shadow-sm"
-            >
-              <h2 className="text-sm md:text-lg font-semibold text-red-800">
-                Total Spent
-              </h2>
-              <p className="text-lg md:text-2xl font-bold text-red-600">
-                {convertToIndianCurrency(summary.totalDebited || 0)}
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className={`p-3 md:p-6 rounded-lg shadow-sm ${
-                currentBalance >= 0 ? "bg-blue-50" : "bg-orange-50"
-              }`}
-            >
-              <h2
-                className={`text-sm md:text-lg font-semibold ${
-                  currentBalance >= 0 ? "text-blue-800" : "text-orange-800"
-                }`}
-              >
-                Current Balance
-              </h2>
-              <p
-                className={`text-lg md:text-2xl font-bold ${
-                  currentBalance >= 0 ? "text-blue-600" : "text-orange-600"
-                }`}
-              >
-                {convertToIndianCurrency(currentBalance || 0)}
-              </p>
-            </motion.div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-3 mb-6">
-            <motion.button
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{
-                delay: 0.5,
-                duration: 0.3,
-              }}
-              whileHover={{
-                scale: 1.03,
-                boxShadow: "0 0 20px rgba(34, 197, 94, 0.3)",
-                backgroundColor: "rgb(22 163 74)",
-              }}
-              whileTap={{
-                scale: 0.97,
-                transition: { duration: 0.1 },
-              }}
-              onClick={handlePaymentClick}
-              disabled={isCreatingPaymentLink || false}
-              className="group relative px-3 py-1.5 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer flex items-center justify-center gap-1.5 overflow-hidden disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              <motion.div
-                initial={{ rotate: -10, opacity: 0 }}
-                animate={{ rotate: 0, opacity: 1 }}
-                transition={{
-                  delay: 0.6,
-                  type: "spring",
-                  stiffness: 200,
-                  damping: 20,
-                }}
-              >
-                <FaRupeeSign className="text-yellow-300" size={14} />
-              </motion.div>
-              <span>
-                {isCreatingPaymentLink ? "Creating..." : "Make Payment"}
-              </span>
-            </motion.button>
-
-            {/* Redeem Button - Only show for fund creator */}
-            {isFundCreator && currentBalance > 0 && (
-              <motion.button
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{
-                  delay: 0.55,
-                  duration: 0.3,
-                }}
-                whileHover={{
-                  scale: 1.03,
-                  boxShadow: "0 0 20px rgba(59, 130, 246, 0.3)",
-                  backgroundColor: "rgb(37 99 235)",
-                }}
-                whileTap={{
-                  scale: 0.97,
-                  transition: { duration: 0.1 },
-                }}
-                onClick={() => setIsRedeemModalOpen(true)}
-                disabled={isRedeeming}
-                className="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm font-medium transition-all duration-200 flex items-center justify-center gap-1.5 disabled:opacity-50 disabled:cursor-not-allowed text-center"
-              >
-                <FaMoneyBillWave size={14} />
-                {isRedeeming ? "Processing..." : "Redeem Funds"}
-              </motion.button>
-            )}
-
-            {transactions?.length > 0 && (
-              <>
-                <motion.button
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{
-                    delay: 0.6,
-                    duration: 0.3,
-                  }}
-                  whileHover={{
-                    scale: 1.03,
-                    boxShadow: "0 0 20px rgba(147, 51, 234, 0.3)",
-                    backgroundColor: "rgb(126 34 206)",
-                  }}
-                  whileTap={{
-                    scale: 0.97,
-                    transition: { duration: 0.1 },
-                  }}
-                  onClick={() => {
-                    setGlobalLoading(true);
-                    router.push(`/fund/${fund.slug}/analytics`);
-                  }}
-                  className="px-3 py-1.5 bg-purple-600 text-white rounded-lg text-sm font-medium transition-all duration-200"
-                >
-                  View Analytics
-                </motion.button>
-
-                <motion.button
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{
-                    delay: 0.7,
-                    duration: 0.3,
-                  }}
-                  whileHover={{
-                    scale: 1.03,
-                    boxShadow: "0 0 20px rgba(37, 99, 235, 0.3)",
-                    backgroundColor: "rgb(29 78 216)",
-                  }}
-                  whileTap={{
-                    scale: 0.97,
-                    transition: { duration: 0.1 },
-                  }}
-                  onClick={exportToCSV}
-                  className="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-sm font-medium transition-all duration-200"
-                >
-                  Export to CSV
-                </motion.button>
-              </>
-            )}
-              {/* share modal and overlay remain but trigger moved to floating button below */}
-          </div>
-
-          {shareError && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-red-500 text-sm mb-4"
-            >
-              {shareError}
-            </motion.div>
-          )}
-          {fund?.isPrivate && !isFundCreator ? (
-            <div className="bg-white rounded-lg shadow-sm p-6 text-center text-gray-600">
-              This fund is private. You can't view details.
-            </div>
-          ) : (
-            <>
-              {/* Top Contributors */}
-              <TopContributors contributor={summary.topContributor || {}} />
-              <ContributorsCount contributors={summary.contributorCount || 0} />
-
-              {/* Transactions List */}
-              <div className="bg-white rounded-lg shadow-sm p-6">
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="text-xl font-semibold text-gray-800">
-                    Recent Transactions
-                  </h2>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className={`rounded-lg border p-4 hover:shadow-md transition-all duration-300 ${
+                      currentBalance >= 0 
+                        ? "bg-blue-50 border-blue-200" 
+                        : "bg-orange-50 border-orange-200"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      {currentBalance >= 0 ? (
+                        <FaWallet className="text-blue-600 text-lg" />
+                      ) : (
+                        <FaExclamationTriangle className="text-orange-600 text-lg" />
+                      )}
+                      <h2 className="text-sm font-semibold text-[#111718]">
+                        Current Balance
+                      </h2>
+                    </div>
+                    <p className={`text-xl font-semibold ${
+                      currentBalance >= 0 ? "text-blue-600" : "text-orange-600"
+                    }`}>
+                      {convertToIndianCurrency(currentBalance || 0)}
+                    </p>
+                  </motion.div>
                 </div>
-                {transactions?.length > 0 ? (
-                  <div className="space-y-4">
-                    {transactions.map((transaction, index) => (
-                      <motion.div
-                        key={transaction._id}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className={`p-4 rounded-lg ${
-                          transaction.transactionType === "credit"
-                            ? "bg-green-50"
-                            : "bg-red-50"
-                        }`}
-                      >
-                        <div className="flex justify-between items-center">
-                          <div>
-                            {transaction.name && (
-                              <p className="text-xs text-gray-500 font-normal mb-0.5">
-                                {escapeHtml(transaction.name)}
-                              </p>
-                            )}
-                            <p className="font-medium text-gray-800">
-                              {escapeHtml(transaction.contact)}
-                            </p>
-                            <p className="text-xs text-gray-400 mt-0.5">
-                              {formatDate(transaction.date)}
-                            </p>
-                          </div>
-                          <div className="text-right">
-                            <p
-                              className={`font-bold ${
-                                transaction.transactionType === "credit"
-                                  ? "text-green-600"
-                                  : "text-red-600"
-                              }`}
-                            >
-                              {transaction.transactionType === "credit"
-                                ? "+"
-                                : "-"}
-                              {convertToIndianCurrency(transaction.amount)}
-                            </p>
-                            <p className="text-xs text-gray-500">
-                              Balance:{" "}
-                              {convertToIndianCurrency(
-                                transaction.closingBalance || 0
-                              )}
-                            </p>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center text-gray-500">
-                    No transactions found
-                  </div>
-                )}
               </div>
-            </>
-          )}
+
+              {/* Action Buttons */}
+              <div className="px-6 sm:px-10 mb-8">
+                <div className="flex flex-wrap gap-3 justify-center sm:justify-start">
+                  <motion.button
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{
+                      delay: 0.5,
+                      duration: 0.3,
+                    }}
+                    whileHover={{
+                      scale: 1.02,
+                    }}
+                    whileTap={{
+                      scale: 0.98,
+                      transition: { duration: 0.1 },
+                    }}
+                    onClick={handlePaymentClick}
+                    disabled={isCreatingPaymentLink || false}
+                    className="flex items-center justify-center px-4 py-2.5 bg-green-500 text-white text-sm font-medium rounded-lg hover:bg-green-600 shadow-md disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                  >
+                    <motion.div
+                      initial={{ rotate: -10, opacity: 0 }}
+                      animate={{ rotate: 0, opacity: 1 }}
+                      transition={{
+                        delay: 0.6,
+                        type: "spring",
+                        stiffness: 200,
+                        damping: 20,
+                      }}
+                      className="mr-2"
+                    >
+                      <FaRupeeSign size={14} />
+                    </motion.div>
+                    <span>
+                      {isCreatingPaymentLink ? "Creating..." : "Make Payment"}
+                    </span>
+                  </motion.button>
+
+                  {/* Redeem Button - Only show for fund creator */}
+                  {isFundCreator && currentBalance > 0 && (
+                    <motion.button
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{
+                        delay: 0.55,
+                        duration: 0.3,
+                      }}
+                      whileHover={{
+                        scale: 1.02,
+                      }}
+                      whileTap={{
+                        scale: 0.98,
+                        transition: { duration: 0.1 },
+                      }}
+                      onClick={() => setIsRedeemModalOpen(true)}
+                      disabled={isRedeeming}
+                      className="flex items-center justify-center px-4 py-2.5 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 shadow-md disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
+                    >
+                      <FaMoneyBillWave className="mr-2" size={14} />
+                      {isRedeeming ? "Processing..." : "Redeem Funds"}
+                    </motion.button>
+                  )}
+
+                  {transactions?.length > 0 && (
+                    <>
+                      <motion.button
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{
+                          delay: 0.6,
+                          duration: 0.3,
+                        }}
+                        whileHover={{
+                          scale: 1.02,
+                        }}
+                        whileTap={{
+                          scale: 0.98,
+                          transition: { duration: 0.1 },
+                        }}
+                        onClick={() => {
+                          setGlobalLoading(true);
+                          router.push(`/fund/${fund.slug}/analytics`);
+                        }}
+                        className="flex items-center justify-center px-4 py-2.5 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 shadow-md transition-all duration-200"
+                      >
+                        <FaChartBar className="mr-2" size={14} />
+                        Analytics
+                      </motion.button>
+
+                      <motion.button
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{
+                          delay: 0.7,
+                          duration: 0.3,
+                        }}
+                        whileHover={{
+                          scale: 1.02,
+                        }}
+                        whileTap={{
+                          scale: 0.98,
+                          transition: { duration: 0.1 },
+                        }}
+                        onClick={exportToCSV}
+                        className="flex items-center justify-center px-4 py-2.5 bg-blue-500 text-white text-sm font-medium rounded-lg hover:bg-blue-600 shadow-md transition-all duration-200"
+                      >
+                        <FaFileExport className="mr-2" size={14} />
+                        Export CSV
+                      </motion.button>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {shareError && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="px-6 sm:px-10 mb-8"
+                >
+                  <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+                    <p className="text-red-700 text-sm font-medium">{shareError}</p>
+                  </div>
+                </motion.div>
+              )}
+
+              {fund?.isPrivate && !isFundCreator ? (
+                <div className="px-6 sm:px-10">
+                  <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-8 text-center">
+                    <FaLock className="text-6xl mb-4 text-[#495057] mx-auto" />
+                    <h3 className="text-xl font-bold text-[#111718] mb-2">Private Fund</h3>
+                    <p className="text-[#495057]">This fund is private. You can't view details.</p>
+                  </div>
+                </div>
+              ) : (
+                <div className="px-6 sm:px-10 space-y-8">
+                  {/* Top Contributors */}
+                  <TopContributors contributor={summary.topContributor || {}} />
+                  <ContributorsCount contributors={summary.contributorCount || 0} />
+
+                  {/* Transactions List */}
+                  <div className="bg-white rounded-lg shadow-md border border-gray-200 p-4">
+                    <div className="flex items-center gap-2 mb-4">
+                      <FaClipboardList className="text-lg text-[#0dccf2]" />
+                      <h2 className="text-lg font-semibold text-[#111718]">
+                        Recent Transactions
+                      </h2>
+                    </div>
+                    {transactions?.length > 0 ? (
+                      <div className="space-y-3">
+                        {transactions.map((transaction, index) => (
+                          <motion.div
+                            key={transaction._id}
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: index * 0.1 }}
+                            className={`p-4 rounded-lg border transition-all duration-300 hover:shadow-md ${
+                              transaction.transactionType === "credit"
+                                ? "bg-green-50 border-green-200 hover:border-green-300"
+                                : "bg-red-50 border-red-200 hover:border-red-300"
+                            }`}
+                          >
+                            <div className="flex justify-between items-center">
+                              <div className="flex items-center gap-3">
+                                <div className={`text-lg ${
+                                  transaction.transactionType === "credit" ? "text-green-600" : "text-red-600"
+                                }`}>
+                                  {transaction.transactionType === "credit" ? (
+                                    <FaArrowUp />
+                                  ) : (
+                                    <FaArrowDown />
+                                  )}
+                                </div>
+                                <div>
+                                  {transaction.name && (
+                                    <p className="text-xs text-[#495057] font-medium mb-0.5">
+                                      {escapeHtml(transaction.name)}
+                                    </p>
+                                  )}
+                                  <p className="font-semibold text-[#111718] text-sm">
+                                    {escapeHtml(transaction.contact)}
+                                  </p>
+                                  <p className="text-xs text-[#60838a] mt-0.5">
+                                    {formatDate(transaction.date)}
+                                  </p>
+                                </div>
+                              </div>
+                              <div className="text-right">
+                                <p className={`font-semibold text-lg ${
+                                  transaction.transactionType === "credit"
+                                    ? "text-green-600"
+                                    : "text-red-600"
+                                }`}>
+                                  {transaction.transactionType === "credit" ? "+" : "-"}
+                                  {convertToIndianCurrency(transaction.amount)}
+                                </p>
+                                <p className="text-xs text-[#60838a] mt-0.5">
+                                  Balance: {convertToIndianCurrency(transaction.closingBalance || 0)}
+                                </p>
+                              </div>
+                            </div>
+                          </motion.div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-8">
+                        <FaEdit className="text-4xl mb-3 text-[#0dccf2] mx-auto" />
+                        <h3 className="text-lg font-semibold text-[#111718] mb-2">No Transactions Yet</h3>
+                        <p className="text-[#495057] text-sm">Start collecting funds to see transactions here</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
 
           {/* Amount Modal */}
           <AmountModal
@@ -598,81 +605,116 @@ All updates will be shared on this page.`;
             currentBalance={currentBalance}
           />
 
-          {/* Floating Share Button (fixed above feedback button) */}
-          <button
-            onClick={() => setShare((prev) => !prev)}
-            aria-label="Share this fund"
-            className="fixed right-6 bottom-22 bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-lg transition-all duration-200 ease-in-out hover:scale-105 z-50"
-          >
-            <FaShareAlt className="h-6 w-6" />
-          </button>
+              {/* Floating Share Button */}
+              <motion.button
+                initial={{ opacity: 0, scale: 0 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 1, type: "spring" }}
+                onClick={() => setShare((prev) => !prev)}
+                aria-label="Share this fund"
+                className="fixed right-6 bottom-24 bg-gradient-to-r from-[#0dccf2] to-[#0bb8d9] hover:from-[#0bb8d9] hover:to-[#0aa5c6] text-white rounded-full p-4 shadow-xl transition-all duration-300 ease-in-out hover:scale-110 hover:shadow-2xl z-40"
+              >
+                <FaShareAlt className="h-6 w-6" />
+              </motion.button>
 
-          {/* Share Modal & Overlay */}
-          <AnimatePresence>
-            {share && (
-              <>
-                <motion.div
-                  className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  onClick={() => setShare(false)}
-                />
+              {/* Share Modal & Overlay */}
+              <AnimatePresence>
+                {share && (
+                  <>
+                    <motion.div
+                      className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      onClick={() => setShare(false)}
+                    />
 
-                <motion.div
-                  className="fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl p-6 shadow-xl w-full max-w-md"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <h3 className="text-lg font-semibold text-gray-800 mb-4">Share This Fund</h3>
+                    <motion.div
+                      className="fixed z-50 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl p-8 shadow-2xl w-full max-w-lg border border-gray-100 overflow-hidden"
+                      initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                      animate={{ opacity: 1, scale: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                      transition={{ duration: 0.3, type: "spring" }}
+                    >
+                      {/* Gradient background accent */}
+                      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#0dccf2] to-[#7928CA]"></div>
 
-                  <div className="flex justify-around items-center gap-4">
-                    <div className="flex flex-col items-center gap-2">
-                      <motion.button
-                        whileHover={{ scale: 1.06 }}
-                        whileTap={{ scale: 0.97 }}
-                        onClick={() => handleWhatsAppShare()}
-                        className="w-14 h-14 rounded-full bg-green-500 text-white flex items-center justify-center shadow-md"
-                        aria-label="Share on WhatsApp"
-                      >
-                        <FaWhatsapp className="w-6 h-6" />
-                      </motion.button>
-                      <span className="text-xs text-gray-700">WhatsApp</span>
-                    </div>
+                      <div className="flex justify-between items-center mb-8">
+                        <div>
+                          <h2 className="text-2xl font-bold text-[#111718] mb-1">
+                            Share This Fund
+                          </h2>
+                          <p className="text-[#495057] text-sm">
+                            Help others contribute to this collection
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => setShare(false)}
+                          className="text-[#495057] hover:text-[#111718] cursor-pointer transition-colors duration-200 p-2 hover:bg-gray-100 rounded-full"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M6 18L18 6M6 6l12 12"
+                            />
+                          </svg>
+                        </button>
+                      </div>
 
-                    <div className="flex flex-col items-center gap-2">
-                      <motion.button
-                        whileHover={{ scale: 1.06 }}
-                        whileTap={{ scale: 0.97 }}
-                        onClick={handleShare}
-                        className="w-14 h-14 rounded-full bg-blue-600 text-white flex items-center justify-center shadow-md"
-                        aria-label="Share link"
-                      >
-                        <FaLink className="w-6 h-6" />
-                      </motion.button>
-                      <span className="text-xs text-gray-700">Share Link</span>
-                    </div>
+                      <div className="flex justify-around items-center gap-6">
+                        <div className="flex flex-col items-center gap-3">
+                          <motion.button
+                            whileHover={{ scale: 1.1, y: -2 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={() => handleWhatsAppShare()}
+                            className="w-16 h-16 rounded-full bg-gradient-to-r from-green-500 to-green-600 text-white flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-200"
+                            aria-label="Share on WhatsApp"
+                          >
+                            <FaWhatsapp className="w-7 h-7" />
+                          </motion.button>
+                          <span className="text-sm font-medium text-[#111718]">WhatsApp</span>
+                        </div>
 
-                    <div className="flex flex-col items-center gap-2">
-                      <motion.button
-                        whileHover={{ scale: 1.06 }}
-                        whileTap={{ scale: 0.97 }}
-                        onClick={handleDownload}
-                        className="w-14 h-14 rounded-full bg-gray-700 text-white flex items-center justify-center shadow-md"
-                        aria-label="Download QR"
-                      >
-                        <FaDownload className="w-5 h-5" />
-                      </motion.button>
-                      <span className="text-xs text-gray-700">Download QR</span>
-                    </div>
-                  </div>
+                        <div className="flex flex-col items-center gap-3">
+                          <motion.button
+                            whileHover={{ scale: 1.1, y: -2 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={handleShare}
+                            className="w-16 h-16 rounded-full bg-gradient-to-r from-[#0dccf2] to-blue-600 text-white flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-200"
+                            aria-label="Share link"
+                          >
+                            <FaLink className="w-7 h-7" />
+                          </motion.button>
+                          <span className="text-sm font-medium text-[#111718]">Share Link</span>
+                        </div>
 
-                </motion.div>
-              </>
-            )}
-          </AnimatePresence>
+                        <div className="flex flex-col items-center gap-3">
+                          <motion.button
+                            whileHover={{ scale: 1.1, y: -2 }}
+                            whileTap={{ scale: 0.95 }}
+                            onClick={handleDownload}
+                            className="w-16 h-16 rounded-full bg-gradient-to-r from-gray-700 to-gray-800 text-white flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-200"
+                            aria-label="Download QR"
+                          >
+                            <FaDownload className="w-6 h-6" />
+                          </motion.button>
+                          <span className="text-sm font-medium text-[#111718]">Download QR</span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+            </div>
+          </div>
         </div>
       </div>
     </>

@@ -26,7 +26,7 @@ export default function Navbar() {
               href="/"
               className="text-2xl font-bold text-[#0dccf2] flex items-center gap-2"
             >
-              <span className="text-2xl">💰</span>
+              <span className="text-2xl">🏷️</span>
               GroupFund
             </Link>
           </div>

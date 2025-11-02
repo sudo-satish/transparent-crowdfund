@@ -1,10 +1,9 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { useLoading } from '../../components/LoadingProvider';
 import { convertToIndianCurrency } from '@/utils/helper';
 import { useState, useEffect } from 'react';
+import { IoArrowBack } from 'react-icons/io5';
 import {
   BarChart,
   Bar,
@@ -49,7 +48,6 @@ function useWindowSize() {
 
 export default function Analytics({ transactions, summary }) {
   const router = useRouter();
-  const { setIsLoading } = useLoading();
   const { width } = useWindowSize();
 
   // Process transactions data for monthly chart
@@ -96,21 +94,17 @@ export default function Analytics({ transactions, summary }) {
   return (
     <div className='min-h-screen bg-gray-50 pt-24 p-8'>
       <div className='max-w-6xl mx-auto'>
-        <div className='flex justify-between items-center mb-8'>
-          <h1 className='text-3xl font-bold text-gray-800'>
+        <div className='flex items-center mb-8'>
+          <button
+            onClick={() => router.push("/dashboard")}
+            aria-label="Back to dashboard"
+            className="p-2 rounded-lg hover:bg-gray-100 transition-all duration-200"
+          >
+            <IoArrowBack className="text-xl text-[#111718]" />
+          </button>
+          <h1 className='text-3xl font-bold text-gray-800 ml-4'>
             Transaction Analytics
           </h1>
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => {
-              setIsLoading(true);
-              router.push('/dashboard');
-            }}
-            className='px-2 sm:px-4 py-1.5 sm:py-2 bg-gray-600 text-white rounded-lg text-xs sm:text-sm font-medium hover:bg-gray-700 transition-colors'
-          >
-            Back to Transactions
-          </motion.button>
         </div>
 
         <div className='grid grid-cols-1 gap-6'>
