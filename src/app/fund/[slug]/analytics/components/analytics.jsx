@@ -167,15 +167,15 @@ export default function Analytics({ transactions, summary, fund }) {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 }}
-                    className="bg-red-50 rounded-lg border border-red-200 p-4 hover:shadow-md transition-all duration-300"
+                    className="bg-orange-50 rounded-lg border border-orange-200 p-4 hover:shadow-md transition-all duration-300"
                 >
                   <div className="flex items-center gap-2 mb-2">
-                      <FaRupeeSign className="text-red-600 text-lg" />
+                      <FaRupeeSign className="text-orange-600 text-lg" />
                         <h2 className="text-sm font-semibold text-[#111718]">
                             Total Spent
                         </h2>
                   </div>
-                  <p className="text-xl font-semibold text-red-600">
+                  <p className="text-xl font-semibold text-orange-600">
                     {convertToIndianCurrency(summary.totalDebited || 0)}
                   </p>
                 </motion.div>
@@ -185,23 +185,23 @@ export default function Analytics({ transactions, summary, fund }) {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
                     className={`rounded-lg border p-4 hover:shadow-md transition-all duration-300 ${
-                      summary.totalBalance >= 0 
+                      summary.totalBalance > 0 
                         ? "bg-blue-50 border-blue-200" 
                         : "bg-orange-50 border-orange-200"
                     }`}
                   >
                     <div className="flex items-center gap-2 mb-2">
-                      {summary.totalBalance >= 0 ? (
+                      {summary.totalBalance > 0 ? (
                         <FaWallet className="text-blue-600 text-lg" />
                       ) : (
-                        <FaExclamationTriangle className="text-orange-600 text-lg" />
+                        <FaExclamationTriangle className="text-red-600 text-lg" />
                       )}
                       <h2 className="text-sm font-semibold text-[#111718]">
                         Current Balance
                       </h2>
                     </div>
                     <p className={`text-xl font-semibold ${
-                      summary.currentBalance >= 0 ? "text-blue-600" : "text-orange-600"
+                      summary.totalBalance > 0 ? "text-blue-600" : "text-red-600"
                     }`}>
                       {convertToIndianCurrency(summary.totalBalance || 0)}
                     </p>

@@ -321,15 +321,15 @@ All updates will be shared on this page.`;
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1 }}
-                    className="bg-red-50 rounded-lg border border-red-200 p-4 hover:shadow-md transition-all duration-300"
+                    className="bg-orange-50 rounded-lg border border-orange-200 p-4 hover:shadow-md transition-all duration-300"
                   >
                     <div className="flex items-center gap-2 mb-2">
-                      <FaRupeeSign className="text-red-600 text-lg" />
+                      <FaRupeeSign className="text-orange-600 text-lg" />
                       <h2 className="text-sm font-semibold text-[#111718]">
                         Total Spent
                       </h2>
                     </div>
-                    <p className="text-xl font-semibold text-red-600">
+                    <p className="text-xl font-semibold text-orange-600">
                       {convertToIndianCurrency(summary.totalDebited || 0)}
                     </p>
                   </motion.div>
@@ -339,23 +339,23 @@ All updates will be shared on this page.`;
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2 }}
                     className={`rounded-lg border p-4 hover:shadow-md transition-all duration-300 ${
-                      currentBalance >= 0 
+                      currentBalance > 0 
                         ? "bg-blue-50 border-blue-200" 
-                        : "bg-orange-50 border-orange-200"
+                        : "bg-red-50 border-red-200"
                     }`}
                   >
                     <div className="flex items-center gap-2 mb-2">
-                      {currentBalance >= 0 ? (
+                      {currentBalance > 0 ? (
                         <FaWallet className="text-blue-600 text-lg" />
                       ) : (
-                        <FaExclamationTriangle className="text-orange-600 text-lg" />
+                        <FaExclamationTriangle className="text-red-600 text-lg" />
                       )}
                       <h2 className="text-sm font-semibold text-[#111718]">
                         Current Balance
                       </h2>
                     </div>
                     <p className={`text-xl font-semibold ${
-                      currentBalance >= 0 ? "text-blue-600" : "text-orange-600"
+                      currentBalance > 0 ? "text-blue-600" : "text-red-600"
                     }`}>
                       {convertToIndianCurrency(currentBalance || 0)}
                     </p>
@@ -523,13 +523,13 @@ All updates will be shared on this page.`;
                             className={`p-4 rounded-lg border transition-all duration-300 hover:shadow-md ${
                               transaction.transactionType === "credit"
                                 ? "bg-green-50 border-green-200 hover:border-green-300"
-                                : "bg-red-50 border-red-200 hover:border-red-300"
+                                : "bg-orange-50 border-orange-200 hover:border-orange-300"
                             }`}
                           >
                             <div className="flex justify-between items-center">
                               <div className="flex items-center gap-3">
                                 <div className={`text-lg ${
-                                  transaction.transactionType === "credit" ? "text-green-600" : "text-red-600"
+                                  transaction.transactionType === "credit" ? "text-green-600" : "text-orange-600"
                                 }`}>
                                   {transaction.transactionType === "credit" ? (
                                     <FaArrowUp />
@@ -555,7 +555,7 @@ All updates will be shared on this page.`;
                                 <p className={`font-semibold text-lg ${
                                   transaction.transactionType === "credit"
                                     ? "text-green-600"
-                                    : "text-red-600"
+                                    : "text-orange-600"
                                 }`}>
                                   {transaction.transactionType === "credit" ? "+" : "-"}
                                   {convertToIndianCurrency(transaction.amount)}
