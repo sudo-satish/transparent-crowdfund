@@ -76,51 +76,66 @@ export default function RedeemModal({
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
-            className='bg-white rounded-lg shadow-xl max-w-md w-full p-6'
+            className='bg-white rounded-2xl shadow-2xl border border-gray-100 max-w-md w-full p-8 relative overflow-hidden'
             onClick={(e) => e.stopPropagation()}
           >
-            <div className='flex justify-between items-center mb-4'>
-              <h2 className='text-xl font-semibold text-gray-800'>
-                Redeem Funds
-              </h2>
+            {/* Gradient background accent */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#0dccf2] to-[#7928CA]"></div>
+            <div className='flex justify-between items-center mb-8'>
+              <div>
+                <h2 className='text-2xl font-bold text-[#111718] mb-1'>
+                  Redeem Funds
+                </h2>
+                <p className="text-[#495057] text-sm">
+                  Withdraw your available balance
+                </p>
+              </div>
               <button
                 onClick={handleClose}
-                className='text-gray-400 hover:text-gray-600 transition-colors'
+                className="text-[#495057] hover:text-[#111718] cursor-pointer transition-colors duration-200 p-2 hover:bg-gray-100 rounded-full"
               >
-                <FaTimes size={20} />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
               </button>
             </div>
 
-            <div className='mb-4 p-3 bg-blue-50 rounded-lg'>
-              <p className='text-sm text-blue-800'>
+            <div className='mb-4 p-3 bg-gradient-to-r from-[#0dccf2]/10 to-[#7928CA]/10 rounded-xl border border-[#0dccf2]/20'>
+              <p className='text-sm text-[#0dccf2]'>
                 <strong>Available for redemption:</strong>
                 {convertToIndianCurrency(currentBalance)}
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className='space-y-4'>
+            <form onSubmit={handleSubmit} className='space-y-6'>
               <div>
                 <label
                   htmlFor='amount'
-                  className='block text-sm font-medium text-gray-700 mb-2'
+                  className="block text-sm font-bold text-[#111718] mb-3"
                 >
                   Amount to Redeem
                 </label>
-                <div className='relative'>
-                  <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-                    <FaRupeeSign className='text-gray-400' />
-                  </div>
-                  <input
-                    type='text'
-                    id='amount'
-                    value={amount}
-                    onChange={handleAmountChange}
-                    required
-                    className='w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-gray-400 text-gray-900'
-                    placeholder='Enter amount to redeem'
-                    disabled={isLoading}
-                  />
-                </div>
+                <input
+                  type='text'
+                  id='amount'
+                  value={amount}
+                  onChange={handleAmountChange}
+                  required
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:ring-2 focus:ring-[#0dccf2]/20 focus:border-[#0dccf2] transition-all duration-200 outline-none text-[#111718] placeholder-[#495057] bg-gray-50 focus:bg-white"
+                  placeholder='Enter amount to redeem'
+                  disabled={isLoading}
+                />
                 {amount && !isAmountValid && (
                   <p className='text-red-500 text-xs mt-1'>
                     Amount must be greater than 0 and less than or equal to{' '}
@@ -132,85 +147,70 @@ export default function RedeemModal({
               <div>
                 <label
                   htmlFor='accountHolderName'
-                  className='block text-sm font-medium text-gray-700 mb-2'
+                  className="block text-sm font-bold text-[#111718] mb-3"
                 >
                   Account Holder Name
                 </label>
-                <div className='relative'>
-                  <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-                    <FaUser className='text-gray-400' />
-                  </div>
-                  <input
-                    type='text'
-                    id='accountHolderName'
-                    value={accountHolderName}
-                    onChange={(e) => setAccountHolderName(e.target.value)}
-                    required
-                    className='w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-gray-400 text-gray-900'
-                    placeholder='Enter account holder name'
-                    disabled={isLoading}
-                  />
-                </div>
+                <input
+                  type='text'
+                  id='accountHolderName'
+                  value={accountHolderName}
+                  onChange={(e) => setAccountHolderName(e.target.value)}
+                  required
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:ring-2 focus:ring-[#0dccf2]/20 focus:border-[#0dccf2] transition-all duration-200 outline-none text-[#111718] placeholder-[#495057] bg-gray-50 focus:bg-white"
+                  placeholder='Enter account holder name'
+                  disabled={isLoading}
+                />
               </div>
 
               <div>
                 <label
                   htmlFor='accountNumber'
-                  className='block text-sm font-medium text-gray-700 mb-2'
+                  className="block text-sm font-bold text-[#111718] mb-3"
                 >
                   Account Number
                 </label>
-                <div className='relative'>
-                  <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-                    <FaCreditCard className='text-gray-400' />
-                  </div>
-                  <input
-                    type='text'
-                    id='accountNumber'
-                    value={accountNumber}
-                    onChange={(e) =>
-                      setAccountNumber(e.target.value.replace(/\D/g, ''))
-                    }
-                    required
-                    className='w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-gray-400 text-gray-900'
-                    placeholder='Enter account number'
-                    disabled={isLoading}
-                    maxLength={20}
-                  />
-                </div>
+                <input
+                  type='text'
+                  id='accountNumber'
+                  value={accountNumber}
+                  onChange={(e) =>
+                    setAccountNumber(e.target.value.replace(/\D/g, ''))
+                  }
+                  required
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:ring-2 focus:ring-[#0dccf2]/20 focus:border-[#0dccf2] transition-all duration-200 outline-none text-[#111718] placeholder-[#495057] bg-gray-50 focus:bg-white"
+                  placeholder='Enter account number'
+                  disabled={isLoading}
+                  maxLength={20}
+                />
               </div>
 
               <div>
                 <label
                   htmlFor='ifscCode'
-                  className='block text-sm font-medium text-gray-700 mb-2'
+                  className="block text-sm font-bold text-[#111718] mb-3"
                 >
                   IFSC Code
                 </label>
-                <div className='relative'>
-                  <div className='absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none'>
-                    <FaUniversity className='text-gray-400' />
-                  </div>
-                  <input
-                    type='text'
-                    id='ifscCode'
-                    value={ifscCode}
-                    onChange={(e) => setIfscCode(e.target.value.toUpperCase())}
-                    required
-                    className='w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 placeholder:text-gray-400 text-gray-900'
-                    placeholder='Enter IFSC code'
-                    disabled={isLoading}
-                    maxLength={11}
-                  />
-                </div>
+                <input
+                  type='text'
+                  id='ifscCode'
+                  value={ifscCode}
+                  onChange={(e) => setIfscCode(e.target.value.toUpperCase())}
+                  required
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:ring-2 focus:ring-[#0dccf2]/20 focus:border-[#0dccf2] transition-all duration-200 outline-none text-[#111718] placeholder-[#495057] bg-gray-50 focus:bg-white"
+                  placeholder='Enter IFSC code'
+                  disabled={isLoading}
+                  maxLength={11}
+                />
               </div>
 
-              <div className='flex gap-3 pt-4'>
+              <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-4">
                 <button
                   type='button'
                   onClick={handleClose}
                   disabled={isLoading}
-                  className='flex-1 px-4 py-3 text-gray-700 bg-gray-100 rounded-lg font-medium hover:bg-gray-200 transition-colors disabled:opacity-50'
+                  className="px-6 py-3 text-sm font-medium text-[#495057] bg-gray-100 hover:bg-gray-200 rounded-xl transition-all duration-200 border border-gray-200 disabled:opacity-50"
                 >
                   Cancel
                 </button>
@@ -223,11 +223,11 @@ export default function RedeemModal({
                     !ifscCode.trim() ||
                     !isAmountValid
                   }
-                  className='flex-1 px-4 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2'
+                  className="px-8 py-3 text-sm font-bold text-white bg-gradient-to-r from-[#0dccf2] to-[#0bb8d9] hover:from-[#0bb8d9] hover:to-[#0aa5c6] rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 disabled:transform-none flex items-center justify-center gap-2"
                 >
                   {isLoading ? (
                     <>
-                      <div className='animate-spin rounded-full h-4 w-4 border-b-2 border-white'></div>
+                      <div className='animate-spin rounded-full h-4 w-4 border-2 border-white/30 border-t-white'></div>
                       Processing...
                     </>
                   ) : (

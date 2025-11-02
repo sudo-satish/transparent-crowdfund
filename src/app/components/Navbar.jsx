@@ -69,7 +69,7 @@ export default function Navbar() {
                 href="/dashboard"
                 className="inline-flex items-center"
               >
-                <Button size="sm" className="text-sm flex items-center gap-2">
+                <Button size="sm" className="text-sm bg-[#0dccf2] hover:bg-[#0bb8d9] text-white flex items-center gap-2">
                   {/* simple dashboard icon */}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

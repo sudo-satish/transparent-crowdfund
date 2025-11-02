@@ -15,11 +15,6 @@ export default async function Home({ params }) {
 
     const summary = await getSummaryByFundId(fund._id);
 
-    console.log({
-        userId,
-        fundUser: fund.createdBy
-    })
-
     return (
         <Transactions
             fundId={fund._id.toString()}
