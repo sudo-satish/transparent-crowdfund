@@ -12,7 +12,7 @@ export default function ContactPage() {
                             Contact Us
                         </h1>
                         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                            Have questions or need support? We're here to help you with your GroupFund experience.
+                            Have questions or need support? We're here to help you with your RaiseIt experience.
                         </p>
                     </div>
 

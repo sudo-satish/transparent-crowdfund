@@ -25,7 +25,7 @@ export default function PrivacyPage() {
                         <div>
                             <h2 className="text-2xl font-bold text-gray-900 mb-4">Introduction</h2>
                             <p className="text-gray-600 leading-relaxed">
-                                At GroupFund, we are committed to protecting your privacy and ensuring the security
+                                At RaiseIt, we are committed to protecting your privacy and ensuring the security
                                 of your personal information. This Privacy Policy explains how we collect, use,
                                 disclose, and safeguard your information when you use our platform.
                             </p>
@@ -227,7 +227,7 @@ export default function PrivacyPage() {
                         <div>
                             <h2 className="text-2xl font-bold text-gray-900 mb-4">Children's Privacy</h2>
                             <p className="text-gray-600 leading-relaxed">
-                                GroupFund is not intended for children under 13 years of age. We do not knowingly
+                                RaiseIt is not intended for children under 13 years of age. We do not knowingly
                                 collect personal information from children under 13. If you believe we have collected
                                 information from a child under 13, please contact us immediately.
                             </p>
@@ -237,7 +237,7 @@ export default function PrivacyPage() {
                         <div>
                             <h2 className="text-2xl font-bold text-gray-900 mb-4">International Users</h2>
                             <p className="text-gray-600 leading-relaxed">
-                                If you are accessing GroupFund from outside India, please be aware that
+                                If you are accessing RaiseIt from outside India, please be aware that
                                 your information may be transferred to, stored, and processed in India
                                 where our servers are located. By using our service, you consent to such transfer.
                             </p>
@@ -261,7 +261,7 @@ export default function PrivacyPage() {
                                 please contact us:
                             </p>
                             <div className="space-y-2 text-gray-600">
-                                <p>Email: privacy@groupfund.com</p>
+                                <p>Email: privacy@RaiseIt.com</p>
                                 <p>Address: [Your Company Address]</p>
                                 <p>Phone: [Your Contact Number]</p>
                             </div>

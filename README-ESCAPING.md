@@ -1,6 +1,6 @@
 # HTML Escaping Implementation
 
-This document explains the HTML escaping functionality implemented in the GroupFund application to prevent XSS (Cross-Site Scripting) attacks.
+This document explains the HTML escaping functionality implemented in the RaiseIt application to prevent XSS (Cross-Site Scripting) attacks.
 
 ## Overview
 
@@ -157,4 +157,4 @@ function DisplayUserContent({ userInput }) {
 }
 ```
 
-This implementation ensures that the GroupFund application is secure against XSS attacks while maintaining a good user experience.
+This implementation ensures that the RaiseIt application is secure against XSS attacks while maintaining a good user experience.

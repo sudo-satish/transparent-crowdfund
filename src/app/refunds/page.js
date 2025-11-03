@@ -12,7 +12,7 @@ export default function RefundsPage() {
                             Cancellation and Refunds Policy
                         </h1>
                         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                            Understanding our refund and cancellation policies for GroupFund services.
+                            Understanding our refund and cancellation policies for RaiseIt services.
                         </p>
                         <p className="text-sm text-gray-500 mt-4">
                             Last updated: {new Date().toLocaleDateString()}
@@ -24,7 +24,7 @@ export default function RefundsPage() {
                         <div>
                             <h2 className="text-2xl font-bold text-gray-900 mb-4">Overview</h2>
                             <p className="text-gray-600 leading-relaxed">
-                                At GroupFund, we understand that circumstances may change and you may need to cancel
+                                At RaiseIt, we understand that circumstances may change and you may need to cancel
                                 contributions or request refunds. This policy outlines the terms and conditions for
                                 cancellations and refunds on our platform.
                             </p>
@@ -37,7 +37,7 @@ export default function RefundsPage() {
                                 <div className="bg-green-50 p-6 rounded-lg">
                                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Processing Fees</h3>
                                     <p className="text-gray-600">
-                                        Processing fees charged by GroupFund are generally non-refundable, as these cover
+                                        Processing fees charged by RaiseIt are generally non-refundable, as these cover
                                         the costs of payment processing and platform maintenance.
                                     </p>
                                 </div>
@@ -177,7 +177,7 @@ export default function RefundsPage() {
                                     <li>• Providing updates on fund progress</li>
                                 </ul>
                                 <p className="text-gray-600">
-                                    GroupFund reserves the right to intervene in cases where fund creators fail to
+                                    RaiseIt reserves the right to intervene in cases where fund creators fail to
                                     fulfill their responsibilities or violate platform policies.
                                 </p>
                             </div>
@@ -192,7 +192,7 @@ export default function RefundsPage() {
                                 </p>
                                 <ol className="text-gray-600 space-y-2 ml-6">
                                     <li>1. First, attempt to resolve the issue directly with the fund creator</li>
-                                    <li>2. If unable to resolve, contact GroupFund support</li>
+                                    <li>2. If unable to resolve, contact RaiseIt support</li>
                                     <li>3. Provide all relevant documentation and evidence</li>
                                     <li>4. Our team will investigate and make a determination</li>
                                     <li>5. If necessary, we may involve third-party mediation</li>

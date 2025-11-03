@@ -21,7 +21,7 @@ export default function ShippingPage() {
                         <div>
                             <h2 className="text-2xl font-bold text-gray-900 mb-4">Overview</h2>
                             <p className="text-gray-600 leading-relaxed">
-                                GroupFund is a digital platform that facilitates group funding and payment collection.
+                                RaiseIt is a digital platform that facilitates group funding and payment collection.
                                 As we primarily deal with digital transactions and fund transfers, our shipping policy
                                 focuses on the delivery of digital services and any physical items that may be associated
                                 with our platform.
@@ -36,7 +36,7 @@ export default function ShippingPage() {
                                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Instant Access</h3>
                                     <p className="text-gray-600">
                                         Upon successful payment and fund creation, you will have immediate access to your
-                                        GroupFund dashboard and all associated digital services.
+                                        RaiseIt dashboard and all associated digital services.
                                     </p>
                                 </div>
                                 <div className="bg-gray-50 p-6 rounded-lg">
@@ -88,7 +88,7 @@ export default function ShippingPage() {
                             <h2 className="text-2xl font-bold text-gray-900 mb-4">International Shipping</h2>
                             <div className="space-y-4">
                                 <p className="text-gray-600">
-                                    GroupFund services are available internationally. However, for physical items,
+                                    RaiseIt services are available internationally. However, for physical items,
                                     international shipping may be subject to:
                                 </p>
                                 <ul className="text-gray-600 space-y-2 ml-6">
@@ -112,7 +112,7 @@ export default function ShippingPage() {
                                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Digital Tracking</h3>
                                     <p className="text-gray-600">
                                         All digital transactions and fund activities can be tracked in real-time through
-                                        your GroupFund dashboard.
+                                        your RaiseIt dashboard.
                                     </p>
                                 </div>
                                 <div className="bg-green-50 p-6 rounded-lg">

@@ -12,7 +12,7 @@ export default function TermsPage() {
                             Terms and Conditions
                         </h1>
                         <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                            Please read these terms carefully before using GroupFund services.
+                            Please read these terms carefully before using RaiseIt services.
                         </p>
                         <p className="text-sm text-gray-500 mt-4">
                             Last updated: {new Date().toLocaleDateString()}
@@ -24,7 +24,7 @@ export default function TermsPage() {
                         <div>
                             <h2 className="text-2xl font-bold text-gray-900 mb-4">1. Agreement to Terms</h2>
                             <p className="text-gray-600 leading-relaxed">
-                                By accessing and using GroupFund ("the Service"), you accept and agree to be bound by the
+                                By accessing and using RaiseIt ("the Service"), you accept and agree to be bound by the
                                 terms and provision of this agreement. If you do not agree to abide by the above, please
                                 do not use this service.
                             </p>
@@ -34,7 +34,7 @@ export default function TermsPage() {
                         <div>
                             <h2 className="text-2xl font-bold text-gray-900 mb-4">2. Service Description</h2>
                             <p className="text-gray-600 leading-relaxed mb-4">
-                                GroupFund is a digital platform that enables users to create, manage, and contribute to
+                                RaiseIt is a digital platform that enables users to create, manage, and contribute to
                                 group funds for various purposes including but not limited to:
                             </p>
                             <ul className="text-gray-600 space-y-2 ml-6">
@@ -92,7 +92,7 @@ export default function TermsPage() {
                                 <div className="bg-blue-50 p-6 rounded-lg">
                                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Fees</h3>
                                     <p className="text-gray-600">
-                                        GroupFund may charge processing fees on transactions. All fees are clearly displayed
+                                        RaiseIt may charge processing fees on transactions. All fees are clearly displayed
                                         before completion of any transaction.
                                     </p>
                                 </div>
@@ -125,7 +125,7 @@ export default function TermsPage() {
                             <div className="space-y-4">
                                 <p className="text-gray-600">
                                     The Service and its original content, features, and functionality are and will remain
-                                    the exclusive property of GroupFund and its licensors.
+                                    the exclusive property of RaiseIt and its licensors.
                                 </p>
                                 <p className="text-gray-600">
                                     You retain ownership of any content you submit to the Service, but grant us a license
@@ -148,7 +148,7 @@ export default function TermsPage() {
                                 <div className="bg-yellow-50 p-6 rounded-lg">
                                     <h3 className="text-lg font-semibold text-gray-900 mb-2">Fund Management</h3>
                                     <p className="text-gray-600">
-                                        GroupFund is not responsible for how fund creators use collected funds or for any
+                                        RaiseIt is not responsible for how fund creators use collected funds or for any
                                         disputes between fund participants.
                                     </p>
                                 </div>
@@ -166,7 +166,7 @@ export default function TermsPage() {
                         <div>
                             <h2 className="text-2xl font-bold text-gray-900 mb-4">9. Limitation of Liability</h2>
                             <p className="text-gray-600 leading-relaxed">
-                                In no event shall GroupFund, nor its directors, employees, partners, agents, suppliers,
+                                In no event shall RaiseIt, nor its directors, employees, partners, agents, suppliers,
                                 or affiliates, be liable for any indirect, incidental, special, consequential, or punitive
                                 damages, including without limitation, loss of profits, data, use, goodwill, or other
                                 intangible losses, resulting from your use of the Service.

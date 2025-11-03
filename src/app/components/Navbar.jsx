@@ -8,6 +8,7 @@ import {
   SignOutButton,
 } from "@clerk/nextjs";
 import Link from "next/link";
+import Image from "next/image";
 import { LoadingLink } from "../components/LoadingLink";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
@@ -26,8 +27,13 @@ export default function Navbar() {
               href="/"
               className="text-2xl font-bold text-[#0dccf2] flex items-center gap-2"
             >
-              <span className="text-2xl">🏷️</span>
-              GroupFund
+             <Image
+                src="/logo.png"
+                alt="GroupFund"
+                width={160}
+                height={72}
+                className="rounded-sm"
+              />
             </Link>
           </div>
           <div className="flex items-center gap-4">

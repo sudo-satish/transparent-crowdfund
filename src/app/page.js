@@ -1,6 +1,7 @@
 import { SignUpButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -153,7 +154,7 @@ export default function Home() {
               <div className="px-6 sm:px-10 py-16 bg-gradient-to-r from-blue-50 to-purple-50">
                 <div className="text-center mb-12">
                   <h2 className="text-3xl font-bold text-[#111718] mb-4">
-                    Why Choose GroupFund?
+                    Why Choose RaiseIt?
                   </h2>
                   <p className="text-lg text-[#495057] max-w-3xl mx-auto">
                     Built specifically for Indian collection needs with features
@@ -292,21 +293,13 @@ export default function Home() {
               <div className="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <div className="flex flex-col gap-4 col-span-1 md:col-span-2 lg:col-span-1">
                   <div className="flex items-center gap-3">
-                    <div className="size-6 text-[#0dccf2]">
-                      <svg
-                        fill="none"
-                        viewBox="0 0 48 48"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M24 4C25.7818 14.2173 33.7827 22.2182 44 24C33.7827 25.7818 25.7818 33.7827 24 44C22.2182 33.7827 14.2173 25.7818 4 24C14.2173 22.2182 22.2182 14.2173 24 4Z"
-                          fill="currentColor"
-                        ></path>
-                      </svg>
-                    </div>
-                    <h2 className="text-[#111718] text-xl font-bold">
-                      ClearFund
-                    </h2>
+                    <Image
+                src="/logo.png"
+                alt="GroupFund"
+                width={126}
+                height={36}
+                className="rounded-sm"
+              />
                   </div>
                   <p className="text-sm text-[#60838a]">
                     Your transparent fundraising partner.
@@ -385,7 +378,7 @@ export default function Home() {
                 </div>
               </div>
               <div className="mt-12 border-t border-gray-200 pt-8 text-center text-sm text-[#60838a]">
-                © 2024 ClearFund. All rights reserved.
+                © 2024 RaiseIt. All rights reserved.
               </div>
             </footer>
           </div>
