@@ -85,14 +85,24 @@ export default function Transactions({ fundId, summary, fund, userId }) {
     ].join("\n");
 
     // Create and trigger download
+    // const title=fund.title.replace(/[ -]/g, "_");
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const link = document.createElement("a");
     const url = URL.createObjectURL(blob);
     link.setAttribute("href", url);
-    link.setAttribute(
-      "download",
-      `shyam_colony_transactions_${new Date().toISOString().split("T")[0]}.csv`
-    );
+    // link.setAttribute(
+    //   "download",
+    //   `sahil_transactions_${new Date().toISOString().split("T")[0]}.csv`
+    // );
+    const safeTitle = (fund?.slug || fund?.title || "fund")
+  .toString()
+  .trim()
+  .toLowerCase()
+  .replace(/\s+/g, "_")
+  .replace(/-/g,"_")
+  .replace(/[^a-z0-9-_]/g, "");
+  const date = new Date().toISOString().split("T")[0];
+  link.setAttribute("download", `${safeTitle}_transactions_${date}.csv`);
     link.style.visibility = "hidden";
     document.body.appendChild(link);
     link.click();
