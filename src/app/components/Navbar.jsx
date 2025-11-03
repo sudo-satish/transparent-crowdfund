@@ -5,18 +5,30 @@ import {
   SignUpButton,
   UserButton,
   useUser,
-  SignOutButton,
+  useClerk, // changed
 } from "@clerk/nextjs";
 import Link from "next/link";
 import Image from "next/image";
 import { LoadingLink } from "../components/LoadingLink";
 import { usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const { user, isSignedIn } = useUser();
+  const { signOut } = useClerk(); // changed
+  const router = useRouter();
   const pathname = usePathname();
   const showDashboardButton = pathname !== "/dashboard" && pathname !== "/";
+
+  const handleLogout = async () => {
+    try {
+      await signOut(); // sign out via Clerk
+      router.push("/"); // then redirect to home
+    } catch (err) {
+      console.error("Sign out failed", err);
+    }
+  };
 
   return (
     <nav className="fixed w-full bg-white/80 backdrop-blur-md z-50 border-b-slate-700">
@@ -63,11 +75,9 @@ export default function Navbar() {
                   Welcome, {user?.firstName || user?.username || "User"}
                 </span>
                 <UserButton afterSignOutUrl="/" />
-                <SignOutButton afterSignOutUrl="/">
-                  <Button variant="outline" size="sm" className="text-sm">
-                    Logout
-                  </Button>
-                </SignOutButton>
+                <Button onClick={handleLogout} variant="outline" size="sm" className="text-sm">
+                  Logout
+                </Button>
               </>
             )}
             {showDashboardButton && (
