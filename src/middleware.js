@@ -18,6 +18,9 @@ export default authMiddleware({
     "/terms",
     "/refunds",
     "/shipping",
+    "/about",
+    "/how-it-works",
+    "/causes",
   ],
   afterAuth(auth, req) {
     // If user is signed in and trying to access home page, redirect to dashboard
