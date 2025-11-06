@@ -10,7 +10,7 @@ import { db } from "@/services/db";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "CrowdFund - Fund Your Dreams",
+  title: "RaiseIt - Fund Your Dreams",
   description:
     "A platform for creators to fund their dreams through community support.",
 };
