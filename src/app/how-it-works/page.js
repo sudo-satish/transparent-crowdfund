@@ -2,6 +2,131 @@ import { SignUpButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
+const steps = [
+  {
+    icon: "📝",
+    title: "Create Collection",
+    description: "Set up your Shagun, party fund, or donation drive in 2 minutes. Add details and share with contributors.",
+    benefit: "Separate account created instantly - no mixing with personal money"
+  },
+  {
+    icon: "💳",
+    title: "Receive Payments",
+    description: "Contributors pay directly to your separate collection account. No personal account mixing.",
+    benefit: "Real-time notifications and automatic tracking of every contribution"
+  },
+  {
+    icon: "📱",
+    title: "Track & Manage",
+    description: "Monitor all contributions in real-time. Access complete history anytime for future reference.",
+    benefit: "Lifetime access to contributor details and transaction history"
+  },
+];
+
+const detailedSteps = [
+  {
+    icon: "📝",
+    title: "Create Your Collection",
+    description: "Start by creating your collection page with all the necessary details. Choose from templates for Shagun, party funds, religious events, or create a custom collection. Add your story, set a target amount, and customize the page to match your event.",
+    benefits: [
+      "Separate collection account created instantly",
+      "Professional collection page with your branding",
+      "Multiple payment options for contributors",
+      "Mobile-optimized for easy sharing"
+    ],
+    features: [
+      "Pre-built templates for common use cases",
+      "Custom branding and messaging",
+      "Target amount and deadline settings",
+      "Privacy controls for contributor visibility"
+    ]
+  },
+  {
+    icon: "💳",
+    title: "Share and Collect",
+    description: "Share your collection link via WhatsApp, SMS, email, or social media. Contributors can pay instantly using UPI, cards, or net banking. Every payment goes directly to your separate collection account - never mixed with personal money.",
+    benefits: [
+      "Instant payment processing",
+      "Real-time contribution notifications",
+      "Automatic receipt generation",
+      "Complete payment security"
+    ],
+    features: [
+      "Multiple sharing options",
+      "UPI, Card, and Net Banking support",
+      "Instant payment confirmations",
+      "Automated thank you messages"
+    ]
+  },
+  {
+    icon: "📱",
+    title: "Track and Manage",
+    description: "Monitor your collection progress in real-time through your dashboard. See who contributed, when, and how much. Download reports, send updates to contributors, and access your complete collection history anytime.",
+    benefits: [
+      "Real-time collection tracking",
+      "Detailed contributor analytics",
+      "Lifetime history access",
+      "Professional reporting"
+    ],
+    features: [
+      "Live dashboard with analytics",
+      "Contributor management tools",
+      "Export options for records",
+      "Mobile app for on-the-go tracking"
+    ]
+  }
+];
+
+const keyFeatures = [
+  {
+    icon: "🔒",
+    title: "Separate Account",
+    description: "No mixing with personal money. Complete visibility and control of collected funds."
+  },
+  {
+    icon: "📊",
+    title: "Auto Tracking",
+    description: "No manual work required. Every transaction recorded automatically with details."
+  },
+  {
+    icon: "♾️",
+    title: "Lifetime History",
+    description: "Access your collection history anytime, anywhere, forever. Never lose track again."
+  },
+  {
+    icon: "👥",
+    title: "Contributor List",
+    description: "See who contributed what amount with complete contact details and timestamps."
+  }
+];
+
+const faqs = [
+  {
+    question: "How long does it take to set up a collection?",
+    answer: "You can create and launch your collection in under 5 minutes. Simply choose a template, add your details, and start sharing the link with contributors."
+  },
+  {
+    question: "Is my money safe and separate from personal accounts?",
+    answer: "Yes, absolutely. Every collection gets its own separate account that's completely isolated from your personal banking. You have full control and visibility over these funds."
+  },
+  {
+    question: "Can contributors see who else has contributed?",
+    answer: "You can choose the privacy level. Contributors can see the total amount and number of contributors, but individual contributor details are only visible to you unless you choose to make them public."
+  },
+  {
+    question: "What payment methods do you support?",
+    answer: "We support all major payment methods including UPI (GPay, PhonePe, Paytm), credit/debit cards, net banking, and digital wallets for maximum convenience."
+  },
+  {
+    question: "How do I access my collection history later?",
+    answer: "Your collection history is stored permanently in your account. You can access it anytime through your dashboard, download reports, and even reference past collections when creating new ones."
+  },
+  {
+    question: "Are there any fees for using RaiseIt?",
+    answer: "RaiseIt is free to start and use. We only charge a small transaction fee (similar to other payment platforms) when money is collected, ensuring our interests are aligned with your success."
+  }
+];
+
 export default function HowItWorksPage() {
   return (
     <div className="relative flex h-auto min-h-screen w-full flex-col bg-white text-[#111718] font-display overflow-x-hidden">
@@ -70,35 +195,8 @@ export default function HowItWorksPage() {
                   ))}
                 </div>
               </div>
-            </main>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
-const steps = [
-  {
-    icon: "📝",
-    title: "Create Collection",
-    description: "Set up your Shagun, party fund, or donation drive in 2 minutes. Add details and share with contributors.",
-    benefit: "Separate account created instantly - no mixing with personal money"
-  },
-  {
-    icon: "💳",
-    title: "Receive Payments",
-    description: "Contributors pay directly to your separate collection account. No personal account mixing.",
-    benefit: "Real-time notifications and automatic tracking of every contribution"
-  },
-  {
-    icon: "📱",
-    title: "Track & Manage",
-    description: "Monitor all contributions in real-time. Access complete history anytime for future reference.",
-    benefit: "Lifetime access to contributor details and transaction history"
-  },
-]; 
-             {/* Detailed Process */}
+              {/* Detailed Process */}
               <div className="px-6 sm:px-10 py-16 bg-gray-50">
                 <div className="text-center mb-12">
                   <h2 className="text-3xl font-bold text-[#111718] mb-4">
@@ -240,107 +338,10 @@ const steps = [
                   </div>
                 </div>
               </div>
-
-const detailedSteps = [
-  {
-    icon: "📝",
-    title: "Create Your Collection",
-    description: "Start by creating your collection page with all the necessary details. Choose from templates for Shagun, party funds, religious events, or create a custom collection. Add your story, set a target amount, and customize the page to match your event.",
-    benefits: [
-      "Separate collection account created instantly",
-      "Professional collection page with your branding",
-      "Multiple payment options for contributors",
-      "Mobile-optimized for easy sharing"
-    ],
-    features: [
-      "Pre-built templates for common use cases",
-      "Custom branding and messaging",
-      "Target amount and deadline settings",
-      "Privacy controls for contributor visibility"
-    ]
-  },
-  {
-    icon: "💳",
-    title: "Share and Collect",
-    description: "Share your collection link via WhatsApp, SMS, email, or social media. Contributors can pay instantly using UPI, cards, or net banking. Every payment goes directly to your separate collection account - never mixed with personal money.",
-    benefits: [
-      "Instant payment processing",
-      "Real-time contribution notifications",
-      "Automatic receipt generation",
-      "Complete payment security"
-    ],
-    features: [
-      "Multiple sharing options",
-      "UPI, Card, and Net Banking support",
-      "Instant payment confirmations",
-      "Automated thank you messages"
-    ]
-  },
-  {
-    icon: "📱",
-    title: "Track and Manage",
-    description: "Monitor your collection progress in real-time through your dashboard. See who contributed, when, and how much. Download reports, send updates to contributors, and access your complete collection history anytime.",
-    benefits: [
-      "Real-time collection tracking",
-      "Detailed contributor analytics",
-      "Lifetime history access",
-      "Professional reporting"
-    ],
-    features: [
-      "Live dashboard with analytics",
-      "Contributor management tools",
-      "Export options for records",
-      "Mobile app for on-the-go tracking"
-    ]
-  }
-];
-
-const keyFeatures = [
-  {
-    icon: "🔒",
-    title: "Separate Account",
-    description: "No mixing with personal money. Complete visibility and control of collected funds."
-  },
-  {
-    icon: "📊",
-    title: "Auto Tracking",
-    description: "No manual work required. Every transaction recorded automatically with details."
-  },
-  {
-    icon: "♾️",
-    title: "Lifetime History",
-    description: "Access your collection history anytime, anywhere, forever. Never lose track again."
-  },
-  {
-    icon: "👥",
-    title: "Contributor List",
-    description: "See who contributed what amount with complete contact details and timestamps."
-  }
-];
-
-const faqs = [
-  {
-    question: "How long does it take to set up a collection?",
-    answer: "You can create and launch your collection in under 5 minutes. Simply choose a template, add your details, and start sharing the link with contributors."
-  },
-  {
-    question: "Is my money safe and separate from personal accounts?",
-    answer: "Yes, absolutely. Every collection gets its own separate account that's completely isolated from your personal banking. You have full control and visibility over these funds."
-  },
-  {
-    question: "Can contributors see who else has contributed?",
-    answer: "You can choose the privacy level. Contributors can see the total amount and number of contributors, but individual contributor details are only visible to you unless you choose to make them public."
-  },
-  {
-    question: "What payment methods do you support?",
-    answer: "We support all major payment methods including UPI (GPay, PhonePe, Paytm), credit/debit cards, net banking, and digital wallets for maximum convenience."
-  },
-  {
-    question: "How do I access my collection history later?",
-    answer: "Your collection history is stored permanently in your account. You can access it anytime through your dashboard, download reports, and even reference past collections when creating new ones."
-  },
-  {
-    question: "Are there any fees for using RaiseIt?",
-    answer: "RaiseIt is free to start and use. We only charge a small transaction fee (similar to other payment platforms) when money is collected, ensuring our interests are aligned with your success."
-  }
-];
+            </main>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

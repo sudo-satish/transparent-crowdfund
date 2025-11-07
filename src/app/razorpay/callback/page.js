@@ -60,7 +60,7 @@ export default function CallbackPage() {
         }, 1000);
 
         return () => clearInterval(interval);
-    }, [showRedirect, countdown, router, fundSlug, paymentStatus]);
+    }, [showRedirect, countdown, router, fundSlug, paymentStatus, setIsLoading]);
 
     const getStatusConfig = () => {
         switch (paymentStatus) {

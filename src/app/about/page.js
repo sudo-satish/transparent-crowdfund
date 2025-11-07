@@ -3,6 +3,97 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
+const missionPoints = [
+  {
+    icon: "🎯",
+    title: "Transparency First",
+    description: "Every rupee collected and spent should be visible to all contributors, building trust and accountability in every collection."
+  },
+  {
+    icon: "🔒",
+    title: "Separate & Secure", 
+    description: "Collections should never mix with personal money. Dedicated accounts ensure clarity and prevent confusion."
+  },
+  {
+    icon: "📱",
+    title: "Simple & Accessible",
+    description: "Technology should make collections easier, not complicated. Simple tools that anyone can use without technical knowledge."
+  }
+];
+
+const problemSolutions = [
+  {
+    icon: "💰",
+    title: "Shagun Collection Made Easy",
+    problem: "Money gets mixed with personal transactions, hard to track who gave what amount",
+    solution: "Separate account with automatic tracking. See exactly who contributed how much, forever"
+  },
+  {
+    icon: "🎉",
+    title: "Party Fund Management", 
+    problem: "Using personal account, manual tracking, confusion about contributions",
+    solution: "Dedicated party fund with real-time visibility for all contributors"
+  },
+  {
+    icon: "🙏",
+    title: "Religious Event Collections",
+    problem: "Manual tracking of Bhandara/Jagran funds, no transparency for donors",
+    solution: "Digital collection with complete transparency and automatic record keeping"
+  },
+  {
+    icon: "📱",
+    title: "Lifetime History Access",
+    problem: "Lost records, no way to remember past contributions when attending others' events",
+    solution: "Permanent history helps you reciprocate appropriately at future events"
+  }
+];
+
+const values = [
+  {
+    icon: "🔍",
+    title: "Transparency",
+    description: "Complete visibility into every transaction and fund usage for all stakeholders."
+  },
+  {
+    icon: "🤝",
+    title: "Trust",
+    description: "Building lasting relationships through reliable, secure, and honest collection management."
+  },
+  {
+    icon: "⚡",
+    title: "Simplicity",
+    description: "Making complex collection management simple and accessible for everyone."
+  },
+  {
+    icon: "🛡️",
+    title: "Security",
+    description: "Protecting your funds and data with bank-grade security and compliance."
+  }
+];
+
+const impactStats = [
+  {
+    number: "10,000+",
+    label: "Happy Families",
+    description: "Trust RaiseIt for their collections"
+  },
+  {
+    number: "₹50L+",
+    label: "Collected",
+    description: "Total funds managed transparently"
+  },
+  {
+    number: "25,000+",
+    label: "Collections",
+    description: "Successfully completed"
+  },
+  {
+    number: "99.9%",
+    label: "Uptime",
+    description: "Reliable service guarantee"
+  }
+];
+
 export default function AboutPage() {
   return (
     <div className="relative flex h-auto min-h-screen w-full flex-col bg-white text-[#111718] font-display overflow-x-hidden">
@@ -77,32 +168,8 @@ export default function AboutPage() {
                   ))}
                 </div>
               </div>
-            </main>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
 
-const missionPoints = [
-  {
-    icon: "🎯",
-    title: "Transparency First",
-    description: "Every rupee collected and spent should be visible to all contributors, building trust and accountability in every collection."
-  },
-  {
-    icon: "🔒",
-    title: "Separate & Secure", 
-    description: "Collections should never mix with personal money. Dedicated accounts ensure clarity and prevent confusion."
-  },
-  {
-    icon: "📱",
-    title: "Simple & Accessible",
-    description: "Technology should make collections easier, not complicated. Simple tools that anyone can use without technical knowledge."
-  }
-];   
-           {/* Problem We Solve */}
+              {/* Problem We Solve */}
               <div className="px-6 sm:px-10 py-16 bg-white">
                 <div className="text-center mb-12">
                   <h2 className="text-3xl font-bold text-[#111718] mb-4">
@@ -263,76 +330,10 @@ const missionPoints = [
                   </div>
                 </div>
               </div>
-
-const problemSolutions = [
-  {
-    icon: "💰",
-    title: "Shagun Collection Made Easy",
-    problem: "Money gets mixed with personal transactions, hard to track who gave what amount",
-    solution: "Separate account with automatic tracking. See exactly who contributed how much, forever"
-  },
-  {
-    icon: "🎉",
-    title: "Party Fund Management", 
-    problem: "Using personal account, manual tracking, confusion about contributions",
-    solution: "Dedicated party fund with real-time visibility for all contributors"
-  },
-  {
-    icon: "🙏",
-    title: "Religious Event Collections",
-    problem: "Manual tracking of Bhandara/Jagran funds, no transparency for donors",
-    solution: "Digital collection with complete transparency and automatic record keeping"
-  },
-  {
-    icon: "📱",
-    title: "Lifetime History Access",
-    problem: "Lost records, no way to remember past contributions when attending others' events",
-    solution: "Permanent history helps you reciprocate appropriately at future events"
-  }
-];
-
-const values = [
-  {
-    icon: "🔍",
-    title: "Transparency",
-    description: "Complete visibility into every transaction and fund usage for all stakeholders."
-  },
-  {
-    icon: "🤝",
-    title: "Trust",
-    description: "Building lasting relationships through reliable, secure, and honest collection management."
-  },
-  {
-    icon: "⚡",
-    title: "Simplicity",
-    description: "Making complex collection management simple and accessible for everyone."
-  },
-  {
-    icon: "🛡️",
-    title: "Security",
-    description: "Protecting your funds and data with bank-grade security and compliance."
-  }
-];
-
-const impactStats = [
-  {
-    number: "10,000+",
-    label: "Happy Families",
-    description: "Trust RaiseIt for their collections"
-  },
-  {
-    number: "₹50L+",
-    label: "Collected",
-    description: "Total funds managed transparently"
-  },
-  {
-    number: "25,000+",
-    label: "Collections",
-    description: "Successfully completed"
-  },
-  {
-    number: "99.9%",
-    label: "Uptime",
-    description: "Reliable service guarantee"
-  }
-];
+            </main>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
