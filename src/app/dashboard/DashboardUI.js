@@ -127,9 +127,7 @@ export default function DashboardUI() {
                                     transition={{ duration: 0.5 }}
                                     className="text-center py-16 bg-white rounded-xl shadow-lg border border-gray-200"
                                 >
-                                    <div className="text-6xl mb-6 text-[#0dccf2]">
-                                        <FaBullseye />
-                                    </div>
+                                    
                                     <h2 className="text-2xl font-bold text-[#111718] mb-4">Start Your First Collection</h2>
                                     <p className="text-[#495057] mb-8 max-w-md mx-auto">
                                         Create your first fund to collect contributions from your community with complete transparency
